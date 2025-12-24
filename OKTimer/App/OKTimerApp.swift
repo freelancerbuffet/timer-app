@@ -15,7 +15,6 @@ struct OKTimerApp: App {
         }
         #if os(macOS)
         .windowStyle(.hiddenTitleBar)
-        .windowResizability(.contentSize)
         #endif
     }
 }

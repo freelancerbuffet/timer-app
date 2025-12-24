@@ -1,443 +1,239 @@
-# OK TIMER - Product Requirements Document (PRD)
+# OK TIMER - Development Roadmap
 
-## Product Vision
+A beautifully minimalistic timer application for iOS and macOS built with SwiftUI.
 
-OK TIMER is a beautifully minimalistic timer application for iOS and macOS that helps users stay focused and aware of their time. When the timer completes, it captures attention through delightful animations and gentle sound notifications, making time management both functional and enjoyable.
+## 🎯 Project Vision
 
-## Core Principles
+OK TIMER is designed to be **minimalistic**, **translucent**, and **classy** - a timer app that captures attention through delightful animations and gentle sound notifications when the timer completes.
 
-- **Minimalistic**: Clean, uncluttered interface with essential features only
-- **Translucent**: Modern glass-morphism design that feels lightweight and elegant
-- **Classy**: Refined aesthetics with smooth animations and tasteful interactions
-- **Useful**: Quick to set, easy to use, reliable in notification
+## ✅ Current Status
 
-## Target Platforms
+**✓ Project Setup Complete**
+- Xcode project structure created and configured
+- SwiftUI app template with iOS 15.0+ and macOS 12.0+ support
+- Project builds and runs successfully on both platforms
+- Directory structure matches architectural requirements
 
-- iOS 15.0+
-- macOS 12.0+
-- Built with Xcode 14+ and Swift 5.7+
+**✓ Ready for Development**
+- All source directories created (`Views/`, `ViewModels/`, `Models/`, `Services/`, etc.)
+- Xcode project configured with proper signing capabilities
+- Git repository initialized with appropriate `.gitignore`
 
----
+## 🚀 Development Phases
 
-## Features & Functionality
+### Phase 1: Core Timer Functionality (MVP)
+**Priority: HIGH - Foundation**
+- [ ] Implement `TimerViewModel` with basic state management
+- [ ] Create `TimerDisplayView` with countdown display (MM:SS format)
+- [ ] Build `TimePickerView` for setting minutes and seconds
+- [ ] Add `TimerControlsView` with Start/Pause/Reset buttons
+- [ ] Implement core `TimerService` with precise countdown logic
+- [ ] Basic timer completion with simple alert
 
-### 1. Timer Interface
+**Estimated Time: 1 week**
 
-**Primary Display**
-- Large, readable countdown display (MM:SS format)
-- Translucent background with subtle blur effect
-- Minimal chrome, maximizing display area
-- Support for both portrait and landscape orientations (iOS)
+### Phase 2: Visual Design & Polish
+**Priority: HIGH - User Experience**
+- [ ] Implement translucent background with system blur effects
+- [ ] Create `ProgressRingView` with gradient color transitions
+- [ ] Add `PresetButtonsView` for quick timer presets (1, 5, 10, 15, 30 min)
+- [ ] Implement smooth animations for state transitions
+- [ ] Support Light/Dark mode with proper color schemes
+- [ ] Responsive layout for different screen sizes
 
-**Timer Controls**
-- Time input with intuitive wheel/picker interface
-  - Minutes: 0-99
-  - Seconds: 0-59
-- Quick preset buttons: 1min, 5min, 10min, 15min, 30min
-- Start/Pause button (single, context-aware button)
-- Reset button (appears when timer is running or paused)
+**Estimated Time: 1 week**
 
-**Visual Feedback**
-- Progress ring that depletes as time counts down
-- Color transition: Blue → Yellow → Orange → Red as time approaches zero
-- Pulsing animation in final 10 seconds
+### Phase 3: Completion Experience
+**Priority: MEDIUM - Delight**
+- [ ] Create `CompletionAnimationView` with bounce and confetti effects
+- [ ] Implement `SoundService` for notification sounds
+- [ ] Add sound assets (gentle-chime.wav, soft-ding.wav, happy-bells.wav)
+- [ ] Implement `HapticService` for iOS haptic feedback
+- [ ] Create `NotificationService` for background notifications
+- [ ] Handle background timer completion and app foregrounding
 
-### 2. Timer Completion Experience
+**Estimated Time: 1 week**
 
-**Animation**
-- Gentle bounce animation that scales the display (1.0x → 1.2x → 1.0x)
-- Confetti particle effect (subtle, not overwhelming)
-- Screen pulse effect (3 pulses, subtle opacity change)
-- Animation duration: ~3 seconds total
+### Phase 4: Settings & Customization
+**Priority: MEDIUM - Flexibility**
+- [ ] Build `SettingsView` with grouped settings sections
+- [ ] Implement `SettingsViewModel` for preference management  
+- [ ] Add theme selection (Ocean Blue, Forest Green, Sunset Orange, Monochrome)
+- [ ] Create sound selection interface with preview
+- [ ] Add app behavior toggles (keep awake, auto-start, milliseconds)
+- [ ] Implement UserDefaults persistence for all settings
 
-**Sound**
-- Pleasant, non-jarring notification sound
-- Options:
-  - "Gentle Chime" (default) - soft bell sound
-  - "Soft Ding" - minimal single tone
-  - "Happy Bells" - uplifting two-tone chime
-- Volume respects system settings
-- Repeats 3 times with 1-second intervals
-- Option to continue ringing until dismissed
+**Estimated Time: 1 week**
 
-**User Attention**
-- Haptic feedback (iOS): Medium impact pattern, 3 pulses
-- App badge notification (when in background)
-- Local notification with custom sound
-- Brings app to foreground if in background (on user permission)
+### Phase 5: Polish & Optimization
+**Priority: LOW - Excellence**
+- [ ] Design and implement app icon
+- [ ] Add comprehensive accessibility support (VoiceOver, Dynamic Type)
+- [ ] Optimize performance for smooth 60fps animations
+- [ ] Implement comprehensive error handling
+- [ ] Add unit and UI tests
+- [ ] Prepare App Store assets and descriptions
 
-### 3. Settings & Customization
+**Estimated Time: 1 week**
 
-**Appearance**
-- Light/Dark mode (follows system or manual override)
-- Translucency intensity adjustment (Low/Medium/High)
-- Color theme selection:
-  - Ocean Blue (default)
-  - Forest Green
-  - Sunset Orange
-  - Monochrome
+## 🏗️ Architecture Overview
 
-**Notification Options**
-- Sound selection
-- Vibration pattern (iOS)
-- Notification repeat count (1-5 or continuous)
-- Show notification in background toggle
+**SwiftUI + MVVM Pattern**
+- Views: Pure SwiftUI declarative UI
+- ViewModels: `@ObservableObject` classes managing state
+- Models: Value types for data representation
+- Services: Business logic and system integration
 
-**App Behavior**
-- Keep screen awake while timer running (toggle)
-- Start timer immediately after setting time (toggle)
-- Show milliseconds in final 10 seconds (toggle)
+**Key Technologies**
+- SwiftUI for cross-platform UI
+- Combine for reactive programming
+- AVAudioPlayer for sound playback
+- UserDefaults for settings persistence
+- Local notifications for background alerts
 
----
-
-## Design Specifications
-
-### Color Palette
-
-**Light Mode**
-- Background: `rgba(255, 255, 255, 0.7)` with system blur
-- Primary Text: `rgba(0, 0, 0, 0.9)`
-- Secondary Text: `rgba(0, 0, 0, 0.6)`
-- Accent (Blue): `#007AFF`
-- Progress Ring: Gradient from `#007AFF` to `#FF3B30`
-
-**Dark Mode**
-- Background: `rgba(28, 28, 30, 0.8)` with system blur
-- Primary Text: `rgba(255, 255, 255, 0.95)`
-- Secondary Text: `rgba(255, 255, 255, 0.6)`
-- Accent (Blue): `#0A84FF`
-- Progress Ring: Gradient from `#0A84FF` to `#FF453A`
-
-### Typography
-- Timer Display: SF Pro Rounded, Weight: Semibold, Size: 72pt (iOS) / 96pt (macOS)
-- Preset Buttons: SF Pro, Weight: Medium, Size: 17pt
-- Settings Labels: SF Pro, Weight: Regular, Size: 15pt
-
-### Spacing & Layout
-- Edge padding: 24pt (iOS) / 32pt (macOS)
-- Element spacing: 16pt standard, 24pt for major sections
-- Corner radius: 16pt for cards, 12pt for buttons
-- Progress ring thickness: 8pt
-
-### Animations
-- Standard duration: 0.3s with ease-in-out timing
-- Spring animations for interactive elements (dampening: 0.7, response: 0.5)
-- Completion animation: 3s total with custom bezier curves
-
----
-
-## Technical Architecture
-
-### Project Structure
+## 📁 Current Project Structure
 
 ```
 OKTimer/
 ├── App/
-│   ├── OKTimerApp.swift          # App entry point
-│   └── ContentView.swift          # Main container view
+│   ├── OKTimerApp.swift          ✅ Created - App entry point
+│   └── ContentView.swift         ✅ Created - Main container view
 ├── Views/
-│   ├── TimerDisplayView.swift    # Main timer display
-│   ├── TimerControlsView.swift   # Start/pause/reset buttons
-│   ├── TimePickerView.swift      # Time input interface
-│   ├── PresetButtonsView.swift   # Quick preset buttons
-│   ├── SettingsView.swift        # Settings screen
-│   └── CompletionAnimationView.swift # Completion animation overlay
+│   ├── TimerDisplayView.swift    📝 Next - Main timer display
+│   ├── TimerControlsView.swift   📝 Next - Start/pause/reset buttons
+│   ├── TimePickerView.swift      📝 Next - Time input interface
+│   ├── PresetButtonsView.swift   📝 Later - Quick preset buttons
+│   ├── SettingsView.swift        📝 Later - Settings screen
+│   └── CompletionAnimationView.swift 📝 Later - Completion overlay
 ├── ViewModels/
-│   ├── TimerViewModel.swift      # Timer logic and state
-│   └── SettingsViewModel.swift   # Settings management
+│   ├── TimerViewModel.swift      📝 Next - Timer logic and state
+│   └── SettingsViewModel.swift   📝 Later - Settings management
 ├── Models/
-│   ├── TimerState.swift          # Timer state enum
-│   ├── TimerSettings.swift       # User preferences model
-│   └── SoundOption.swift         # Sound selection enum
+│   ├── TimerState.swift          📝 Next - Timer state enum
+│   ├── TimerSettings.swift       📝 Later - User preferences model
+│   └── SoundOption.swift         📝 Later - Sound selection enum
 ├── Services/
-│   ├── TimerService.swift        # Core timer functionality
-│   ├── SoundService.swift        # Sound playback management
-│   ├── HapticService.swift       # Haptic feedback (iOS)
-│   └── NotificationService.swift # Local notifications
+│   ├── TimerService.swift        📝 Next - Core timer functionality
+│   ├── SoundService.swift        📝 Later - Sound playback management
+│   ├── HapticService.swift       📝 Later - Haptic feedback (iOS)
+│   └── NotificationService.swift 📝 Later - Local notifications
 ├── Utilities/
-│   ├── ColorTheme.swift          # Theme color definitions
-│   ├── AnimationPresets.swift    # Reusable animations
+│   ├── ColorTheme.swift          📝 Later - Theme color definitions
+│   ├── AnimationPresets.swift    📝 Later - Reusable animations
 │   └── Extensions/
-│       ├── View+Extensions.swift
-│       └── Color+Extensions.swift
+│       ├── View+Extensions.swift 📝 Later - SwiftUI view helpers
+│       └── Color+Extensions.swift 📝 Later - Color utilities
 └── Resources/
-    ├── Sounds/
-    │   ├── gentle-chime.wav
-    │   ├── soft-ding.wav
-    │   └── happy-bells.wav
-    └── Assets.xcassets/
+    ├── Sounds/                   📂 Ready for audio files
+    └── Assets.xcassets/          ✅ Created - App assets
 ```
 
-### Key Classes & Responsibilities
-
-**TimerViewModel**
-- Manages timer state (idle, running, paused, completed)
-- Handles countdown logic using Combine framework
-- Publishes UI updates via `@Published` properties
-- Coordinates with services for sound, haptics, notifications
-
-**TimerService**
-- Pure timer logic implementation
-- Uses `Timer.publish()` for precise countdown
-- Calculates remaining time and progress percentage
-- Thread-safe timer operations
-
-**SoundService**
-- Manages `AVAudioPlayer` instances
-- Preloads sound files for instant playback
-- Handles volume and repeat logic
-- Respects system audio settings
-
-**NotificationService**
-- Requests user permission for notifications
-- Schedules local notifications when timer completes
-- Creates notification content with custom sound
-- Handles notification actions (dismiss, restart)
-
-### State Management
-
-**TimerState Enum**
-```swift
-enum TimerState {
-    case idle           // No timer set
-    case running        // Timer counting down
-    case paused         // Timer paused
-    case completed      // Timer reached zero
-}
-```
-
-**Data Flow**
-- SwiftUI with MVVM architecture
-- Combine framework for reactive updates
-- UserDefaults for settings persistence
-- No external dependencies required
-
-### Performance Considerations
-
-- Timer updates at 10 Hz (0.1s intervals) for smooth UI
-- Animations use `withAnimation()` for 60fps performance
-- Lazy loading of sound assets
-- Efficient particle system for confetti (max 50 particles)
-- Background task handling for timer completion
-
----
-
-## User Experience Flow
-
-### First Launch
-1. App opens to timer interface in idle state
-2. Optional: Brief tooltip showing tap to set time
-3. Clean slate, ready to use immediately
-
-### Setting a Timer
-1. User taps on time display OR taps preset button
-2. Time picker appears with smooth animation
-3. User selects minutes and seconds
-4. Taps "Start" or picker auto-confirms after 1s of no interaction
-5. Timer begins countdown immediately
-
-### Timer Running
-1. Large countdown display with progress ring
-2. Pause button visible and easily accessible
-3. Reset button available (with confirmation for long timers)
-4. User can leave app; timer continues in background
-5. Screen stays awake (if setting enabled)
-
-### Timer Completion
-1. Animation begins: bounce + confetti
-2. Sound plays (3 repetitions)
-3. Haptic feedback pulses (iOS)
-4. If in background: notification appears
-5. User taps anywhere to dismiss or "Restart" button to go again
-
-### Settings Access
-1. Settings icon in top-right corner (SF Symbol: gear)
-2. Sheet presentation with grouped settings
-3. Changes apply immediately (except sound preview)
-4. "Done" button dismisses settings
-
----
-
-## Implementation Guidelines
-
-### Phase 1: Core Timer (MVP)
-- [ ] Basic UI layout with timer display
-- [ ] Time picker implementation
-- [ ] Timer countdown logic
-- [ ] Start/pause/reset functionality
-- [ ] Simple completion alert
-
-### Phase 2: Visual Polish
-- [ ] Translucent background with blur
-- [ ] Progress ring with color gradient
-- [ ] Smooth animations for state changes
-- [ ] Preset buttons
-- [ ] Dark mode support
-
-### Phase 3: Completion Experience
-- [ ] Completion animation (bounce + confetti)
-- [ ] Sound service integration
-- [ ] Haptic feedback (iOS)
-- [ ] Background notification support
-
-### Phase 4: Settings & Customization
-- [ ] Settings screen
-- [ ] Theme selection
-- [ ] Sound options
-- [ ] App behavior preferences
-- [ ] Persistence with UserDefaults
-
-### Phase 5: Polish & Optimization
-- [ ] App icon and branding
-- [ ] macOS-specific optimizations
-- [ ] Accessibility features (VoiceOver, Dynamic Type)
-- [ ] Performance optimization
-- [ ] App Store assets preparation
-
----
-
-## Code Style Guidelines
-
-### Swift Best Practices
-- Use Swift's native types and standard library
-- Leverage SwiftUI's declarative syntax
-- Prefer value types (struct) over reference types (class) when appropriate
-- Use property wrappers: `@State`, `@Binding`, `@ObservedObject`, `@Published`
-- Implement proper error handling with `Result` or `throws`
-
-### Naming Conventions
-- ViewModels: `*ViewModel`
-- Services: `*Service`
-- Views: `*View`
-- Use clear, descriptive names: `startTimer()` not `start()`
-- Constants: `private let defaultTimerDuration = 300`
-
-### Code Organization
-- One primary component per file
-- Group related extensions together
-- Use `// MARK: -` for section organization
-- Keep view files under 200 lines; extract subviews as needed
-
-### Comments
-- Document public APIs with `///` doc comments
-- Explain "why" not "what" in regular comments
-- Complex algorithms deserve explanation
-- No commented-out code in final version
-
----
-
-## Testing Strategy
-
-### Unit Tests
-- Timer calculation logic
-- State transitions
-- Time formatting functions
-- Settings persistence
-
-### UI Tests
-- Timer start/pause/reset flow
-- Time picker interaction
-- Settings navigation
-- Completion behavior
-
-### Manual Testing Checklist
-- [ ] Timer accuracy over 30 minutes
-- [ ] Background behavior (app minimized)
-- [ ] Notification delivery
-- [ ] Sound playback at various volumes
-- [ ] Orientation changes (iOS)
-- [ ] Dark mode appearance
-- [ ] Accessibility with VoiceOver
-- [ ] Performance with multiple timer completions
-
----
-
-## Accessibility
-
-- Support Dynamic Type (text scales with system settings)
-- VoiceOver labels for all interactive elements
-- High contrast mode support
-- Reduce motion option (disable confetti/bounce)
-- Ensure 4.5:1 minimum contrast ratio for text
-- Keyboard navigation support (macOS)
-- Minimum touch target: 44x44 points
-
----
-
-## Future Enhancements (Post-V1)
-
-- Multiple concurrent timers
-- Named timers (e.g., "Tea", "Meeting", "Exercise")
-- Timer history and statistics
-- Pomodoro mode (work/break intervals)
-- Siri shortcuts integration
-- Widget support (iOS/macOS)
-- iCloud sync across devices
-- Custom sounds import
-- Focus mode integration
-- Apple Watch companion app
-
----
-
-## Success Metrics
-
-- **Usability**: User can set and start timer in < 5 seconds
-- **Reliability**: Timer accuracy within ±0.5 seconds over 60 minutes
-- **Performance**: App launch to ready state < 2 seconds
-- **Delight**: 90%+ of users keep default notification sound (indicates quality)
-- **Engagement**: Users open app at least 3 times per week
-
----
-
-## Development Timeline Estimate
-
-- **Week 1**: Core timer functionality (Phase 1)
-- **Week 2**: Visual design implementation (Phase 2)
-- **Week 3**: Completion experience (Phase 3)
-- **Week 4**: Settings & customization (Phase 4)
-- **Week 5**: Polish, testing, optimization (Phase 5)
-
----
-
-## Getting Started
+## 🛠️ Getting Started
 
 ### Prerequisites
-- Xcode 14.0 or later
-- macOS 12.0 or later for development
-- Apple Developer account (for device testing and distribution)
+- Xcode 14.0+ (recommended: latest version)
+- macOS 12.0+ for development
+- iOS 15.0+ or macOS 12.0+ for deployment
+- Apple Developer account (for device testing)
 
-### Setup Instructions
-1. Clone this repository
-2. Open `OKTimer.xcodeproj` in Xcode
-3. Select your development team in Signing & Capabilities
-4. Build and run on simulator or device
-5. Refer to inline code documentation for component details
-
-### Building
+### Quick Start
 ```bash
-# Build for iOS simulator
-xcodebuild -scheme OKTimer -destination 'platform=iOS Simulator,name=iPhone 14' build
+# Clone the repository
+git clone <repository-url>
+cd timer-app
+
+# Open in Xcode
+open OKTimer.xcodeproj
+
+# Or use the setup script
+./setup.sh
+```
+
+### Building & Running
+```bash
+# Build for iOS Simulator
+xcodebuild -scheme OKTimer -destination 'platform=iOS Simulator,name=iPhone 15' build
 
 # Build for macOS
 xcodebuild -scheme OKTimer -destination 'platform=macOS' build
 
-# Run tests
+# Run tests (when available)
 xcodebuild test -scheme OKTimer
 ```
 
+## 📝 Next Steps (Immediate Actions)
+
+1. **Start with Phase 1**: Focus on core timer functionality
+2. **Create TimerViewModel**: Implement the central state management
+3. **Build TimerDisplayView**: Large countdown display with basic styling  
+4. **Implement TimerService**: Precise countdown logic using Combine
+5. **Add basic controls**: Start, pause, and reset functionality
+
+## 🎨 Design Reference
+
+**Color Scheme**
+- Light: White translucent with blue accent (#007AFF)
+- Dark: Dark gray translucent with blue accent (#0A84FF)
+- Progress ring: Dynamic gradient (Blue → Orange → Red)
+
+**Typography**
+- Timer: SF Pro Rounded, Semibold, 72pt (iOS) / 96pt (macOS)
+- Buttons: SF Pro, Medium, 17pt
+- Settings: SF Pro, Regular, 15pt
+
+**Key Measurements**
+- Edge padding: 24pt (iOS) / 32pt (macOS)
+- Corner radius: 16pt cards, 12pt buttons
+- Progress ring: 8pt thickness
+
+## 🧪 Development Guidelines
+
+### Code Style
+- Use SwiftUI's declarative patterns
+- Prefer `struct` over `class` when possible
+- Leverage property wrappers: `@State`, `@ObservedObject`, `@Published`
+- Keep views under 200 lines; extract subviews as needed
+- Use `// MARK: -` for code organization
+
+### Naming Conventions
+- ViewModels: `*ViewModel`
+- Services: `*Service` 
+- Views: `*View`
+- Use descriptive names: `startTimer()` not `start()`
+
+### Error Handling
+- Use `Result<Success, Error>` for service operations
+- Implement proper error states in ViewModels
+- Provide user-friendly error messages
+
+## 📊 Success Criteria
+
+- **Performance**: Timer accuracy within ±0.5 seconds over 60 minutes
+- **Usability**: Set and start timer in under 5 seconds
+- **Responsiveness**: App launch to ready state under 2 seconds
+- **Cross-platform**: Identical functionality on iOS and macOS
+- **Accessibility**: Full VoiceOver and Dynamic Type support
+
+## 🔮 Future Enhancements (Post-V1)
+
+- Multiple concurrent timers
+- Named timers with presets
+- Pomodoro technique support
+- Siri Shortcuts integration
+- Widgets for iOS/macOS
+- Apple Watch companion
+- iCloud sync across devices
+
+## 🤝 Contributing
+
+1. Follow the phase-based development approach
+2. Create feature branches for each major component
+3. Write unit tests for ViewModels and Services
+4. Test on both iOS and macOS before committing
+5. Update this roadmap as features are completed
+
 ---
 
-## License
-
-See LICENSE file for details.
-
----
-
-## Contact & Support
-
-For questions or suggestions about this PRD or the implementation, please open an issue in the GitHub repository.
-
----
-
-*Last Updated: December 2025*
-*PRD Version: 1.0*
+**Last Updated**: December 2025  
+**Project Status**: Ready for Development  
+**Current Phase**: Phase 1 (Core Timer Functionality)

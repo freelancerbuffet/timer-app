@@ -26,6 +26,14 @@ fi
 
 echo "✅ Found OKTimer project"
 
+# Test if the project builds
+echo "🔨 Testing project build..."
+if xcodebuild -project OKTimer.xcodeproj -scheme OKTimer -destination 'platform=macOS' build -quiet; then
+    echo "✅ Project builds successfully!"
+else
+    echo "⚠️  Build test failed, but you can still open in Xcode to debug"
+fi
+
 # Open the project
 echo "🚀 Opening OKTimer project in Xcode..."
 if [ -f "OKTimer.xcworkspace/contents.xcworkspacedata" ]; then
@@ -39,6 +47,12 @@ echo "📋 Next Steps:"
 echo "1. In Xcode, select your development team in the Signing & Capabilities tab"
 echo "2. Choose your target device (iOS Simulator or Mac)"
 echo "3. Press Cmd+R to build and run the app"
+echo ""
+echo "🏗️  Project Structure Ready:"
+echo "   - iOS 15.0+ and macOS 12.0+ support"
+echo "   - SwiftUI interface with basic timer display"
+echo "   - Complete folder structure for development"
+echo "   - Asset catalog and entitlements configured"
 echo ""
 echo "📖 Refer to the README.md for detailed development information"
 echo "✨ Happy coding!"
