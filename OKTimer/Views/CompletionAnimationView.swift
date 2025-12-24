@@ -13,6 +13,12 @@ struct CompletionAnimationView: View {
     @State private var rotation: Double = 0
     
     let onDismiss: () -> Void
+    let onSnooze: (() -> Void)?
+    
+    init(onDismiss: @escaping () -> Void, onSnooze: (() -> Void)? = nil) {
+        self.onDismiss = onDismiss
+        self.onSnooze = onSnooze
+    }
     
     var body: some View {
         ZStack {
@@ -55,16 +61,37 @@ struct CompletionAnimationView: View {
                 }
                 .opacity(opacity)
                 
-                // Dismiss button
-                Button(action: onDismiss) {
-                    Text("OK")
-                        .font(.system(size: 17, weight: .semibold, design: .rounded))
-                        .foregroundColor(.white)
-                        .frame(width: 120, height: 44)
-                        .background {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.white.opacity(0.2))
+                // Action buttons
+                VStack(spacing: 12) {
+                    Button(action: onDismiss) {
+                        Text("OK")
+                            .font(.system(size: 17, weight: .semibold, design: .rounded))
+                            .foregroundColor(.white)
+                            .frame(width: 200, height: 44)
+                            .background {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [.blue, .cyan],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                            }
+                    }
+                    
+                    if let onSnooze = onSnooze {
+                        Button(action: onSnooze) {
+                            Text("Snooze 5 min")
+                                .font(.system(size: 15, weight: .medium, design: .rounded))
+                                .foregroundColor(.white.opacity(0.9))
+                                .frame(width: 200, height: 38)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(Color.white.opacity(0.15))
+                                }
                         }
+                    }
                 }
                 .opacity(opacity)
             }

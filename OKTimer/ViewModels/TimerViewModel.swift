@@ -13,11 +13,14 @@ class TimerViewModel: ObservableObject {
     @Published var totalTime: TimeInterval = 300
     @Published var timerState: TimerState = .idle
     @Published var showCompletionAnimation = false
+    @Published var showFullscreenAlert = false
     
     private var timer: AnyCancellable?
     private var endDate: Date?
     private let soundService = SoundService.shared
     private let hapticService = HapticService.shared
+    private let alertWindowManager = AlertWindowManager.shared
+    private let appFeatures = AppFeatures.shared
     
     // Settings
     var settingsViewModel: SettingsViewModel?
@@ -55,6 +58,13 @@ class TimerViewModel: ObservableObject {
         timerState = .running
         endDate = Date().addingTimeInterval(timeRemaining)
         
+        // Schedule notification for when timer completes
+        appFeatures.scheduleNotification(
+            title: "⏰ Timer Complete",
+            body: "Your \(Int(totalTime / 60)) minute timer has finished!",
+            delay: timeRemaining
+        )
+        
         // Play haptic feedback if enabled
         if settingsViewModel?.settings.hapticsEnabled ?? true {
             hapticService.timerStarted()
@@ -73,6 +83,9 @@ class TimerViewModel: ObservableObject {
         timer?.cancel()
         timer = nil
         
+        // Cancel notification when paused
+        appFeatures.cancelAllNotifications()
+        
         // Play haptic feedback if enabled
         if settingsViewModel?.settings.hapticsEnabled ?? true {
             hapticService.timerPaused()
@@ -86,10 +99,29 @@ class TimerViewModel: ObservableObject {
         timerState = .idle
         endDate = nil
         showCompletionAnimation = false
+        showFullscreenAlert = false
+        alertWindowManager.dismissAlert()
+        appFeatures.cancelAllNotifications()
         
         // Play haptic feedback if enabled
         if settingsViewModel?.settings.hapticsEnabled ?? true {
             hapticService.timerReset()
+        }
+    }
+    
+    func snoozeTimer() {
+        // Snooze for 5 minutes
+        showCompletionAnimation = false
+        showFullscreenAlert = false
+        alertWindowManager.dismissAlert()
+        
+        timeRemaining = 300 // 5 minutes
+        totalTime = 300
+        timerState = .idle
+        
+        // Optionally auto-start after snooze
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            self?.startTimer()
         }
     }
     
@@ -132,8 +164,21 @@ class TimerViewModel: ObservableObject {
                 hapticService.timerCompleted()
             }
             
-            // Show completion animation
+            // Show fullscreen alert on macOS
+            #if os(macOS)
+            showFullscreenAlert = true
+            alertWindowManager.showFullscreenAlert(
+                onDismiss: { [weak self] in
+                    self?.dismissCompletionAnimation()
+                },
+                onSnooze: { [weak self] in
+                    self?.snoozeTimer()
+                }
+            )
+            #else
+            // Show in-app completion animation on iOS
             showCompletionAnimation = true
+            #endif
         } else {
             timeRemaining = remaining
         }
@@ -141,5 +186,7 @@ class TimerViewModel: ObservableObject {
     
     func dismissCompletionAnimation() {
         showCompletionAnimation = false
+        showFullscreenAlert = false
+        alertWindowManager.dismissAlert()
     }
 }

@@ -98,11 +98,18 @@ struct ContentView: View {
         .preferredColorScheme(.none)
         .overlay {
             if viewModel.showCompletionAnimation {
-                CompletionAnimationView(onDismiss: {
-                    withAnimation {
-                        viewModel.dismissCompletionAnimation()
+                CompletionAnimationView(
+                    onDismiss: {
+                        withAnimation {
+                            viewModel.dismissCompletionAnimation()
+                        }
+                    },
+                    onSnooze: {
+                        withAnimation {
+                            viewModel.snoozeTimer()
+                        }
                     }
-                })
+                )
                 .transition(.opacity)
             }
         }
@@ -112,6 +119,7 @@ struct ContentView: View {
         .onAppear {
             viewModel.settingsViewModel = settingsViewModel
         }
+        .timerKeyboardShortcuts(viewModel: viewModel)
     }
 }
 
