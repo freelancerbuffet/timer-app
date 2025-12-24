@@ -8,6 +8,12 @@
 import Foundation
 import AVFoundation
 
+#if os(iOS)
+import AudioToolbox
+#else
+import AppKit
+#endif
+
 class SoundService: ObservableObject {
     static let shared = SoundService()
     
