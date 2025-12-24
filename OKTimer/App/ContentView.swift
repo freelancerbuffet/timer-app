@@ -8,40 +8,48 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject private var viewModel = TimerViewModel()
+    
     var body: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: 0) {
+            // Header
             Text("OK TIMER")
-                .font(.system(size: 36, weight: .light, design: .rounded))
-                .foregroundColor(.primary.opacity(0.8))
+                .font(.system(size: 28, weight: .light, design: .rounded))
+                .foregroundColor(.primary.opacity(0.6))
+                .padding(.top, 40)
+                .padding(.bottom, 20)
             
-            Text("05:00")
-                .font(.system(size: 72, weight: .semibold, design: .rounded))
-                .foregroundColor(.primary)
-                .monospacedDigit()
+            Spacer()
             
-            HStack(spacing: 16) {
-                Button("Start") {
-                    // Timer logic will be added
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                
-                Button("Reset") {
-                    // Reset logic will be added
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
-            }
+            // Main timer display with progress ring
+            TimerDisplayView(viewModel: viewModel)
+                .padding(.vertical, 30)
+            
+            Spacer()
+            
+            // Preset buttons
+            PresetButtonsView(
+                onPresetSelected: { seconds in
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        viewModel.setPresetTime(seconds: seconds)
+                    }
+                },
+                isDisabled: viewModel.timerState != .idle
+            )
+            .padding(.bottom, 24)
+            
+            // Timer controls
+            TimerControlsView(viewModel: viewModel)
+                .padding(.bottom, 40)
         }
-        .padding(40)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background {
             #if os(iOS)
             Color.clear
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 0))
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 0))
             #else
             Color.clear
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 16))
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
             #endif
         }
         .preferredColorScheme(.none)

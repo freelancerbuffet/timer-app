@@ -10,6 +10,13 @@
 		AA1234560001 /* OKTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234550001 /* OKTimerApp.swift */; };
 		AA1234580001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234570001 /* ContentView.swift */; };
 		AA12345A0001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA1234590001 /* Assets.xcassets */; };
+		AA1234700001A0001 /* TimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234700001 /* TimerState.swift */; };
+		AA1234710001A0001 /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234710001 /* TimerViewModel.swift */; };
+		AA1234720001A0001 /* ProgressRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234720001 /* ProgressRingView.swift */; };
+		AA1234730001A0001 /* PresetButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234730001 /* PresetButtonsView.swift */; };
+		AA1234740001A0001 /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234740001 /* TimePickerView.swift */; };
+		AA1234750001A0001 /* TimerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234750001 /* TimerControlsView.swift */; };
+		AA1234760001A0001 /* TimerDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234760001 /* TimerDisplayView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +25,13 @@
 		AA1234570001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA1234590001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA12345B0001 /* OKTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OKTimer.entitlements; sourceTree = "<group>"; };
+		AA1234700001 /* TimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerState.swift; sourceTree = "<group>"; };
+		AA1234710001 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
+		AA1234720001 /* ProgressRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRingView.swift; sourceTree = "<group>"; };
+		AA1234730001 /* PresetButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetButtonsView.swift; sourceTree = "<group>"; };
+		AA1234740001 /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
+		AA1234750001 /* TimerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerControlsView.swift; sourceTree = "<group>"; };
+		AA1234760001 /* TimerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDisplayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,21 +88,28 @@
 		AA1234610001 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-			);
+				AA1234720001 /* ProgressRingView.swift */,
+				AA1234730001 /* PresetButtonsView.swift */,
+				AA1234740001 /* TimePickerView.swift */,
+				AA1234750001 /* TimerControlsView.swift */,
+				AA1234760001 /* TimerDisplayView.swift */,
+);
 			path = Views;
 			sourceTree = "<group>";
 		};
 		AA1234620001 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-			);
+				AA1234710001 /* TimerViewModel.swift */,
+);
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		AA1234630001 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-			);
+				AA1234700001 /* TimerState.swift */,
+);
 			path = Models;
 			sourceTree = "<group>";
 		};
@@ -201,7 +222,14 @@
 			files = (
 				AA1234580001 /* ContentView.swift in Sources */,
 				AA1234560001 /* OKTimerApp.swift in Sources */,
-			);
+							AA1234700001A0001 /* TimerState.swift in Sources */,
+				AA1234710001A0001 /* TimerViewModel.swift in Sources */,
+				AA1234720001A0001 /* ProgressRingView.swift in Sources */,
+				AA1234730001A0001 /* PresetButtonsView.swift in Sources */,
+				AA1234740001A0001 /* TimePickerView.swift in Sources */,
+				AA1234750001A0001 /* TimerControlsView.swift in Sources */,
+				AA1234760001A0001 /* TimerDisplayView.swift in Sources */,
+);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
