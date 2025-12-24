@@ -112,6 +112,10 @@ struct ContentView: View {
                     }
                 )
                 .transition(.opacity)
+                .onAppear {
+                    print("🎉 DEBUG: Showing completion animation overlay - showCompletionAnimation is true")
+                    print("🎉 ContentView: CompletionAnimationView overlay appeared")
+                }
             }
         }
         .sheet(isPresented: $showSettings) {

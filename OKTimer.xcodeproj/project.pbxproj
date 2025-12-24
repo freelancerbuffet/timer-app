@@ -25,15 +25,18 @@
 		AA1234820001A0001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234820001 /* SettingsView.swift */; };
 		AA1234830001A0001 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234830001 /* ColorTheme.swift */; };
 		AA1234840001A0001 /* AlertWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234840001 /* AlertWindowManager.swift */; };
+		AA1234850001A0001 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234850001 /* ConfettiView.swift */; };
 
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AA1234520001 /* OKTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OKTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA1234550001 /* OKTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OKTimerApp.swift; sourceTree = "<group>"; };
+		AA12345B0004 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA1234570001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA1234590001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA12345B0001 /* OKTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OKTimer.entitlements; sourceTree = "<group>"; };
+		AA12345B0002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AA1234700001 /* TimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerState.swift; sourceTree = "<group>"; };
 		AA1234710001 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		AA1234720001 /* ProgressRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRingView.swift; sourceTree = "<group>"; };
@@ -42,6 +45,7 @@
 		AA1234750001 /* TimerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerControlsView.swift; sourceTree = "<group>"; };
 		AA1234760001 /* TimerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDisplayView.swift; sourceTree = "<group>"; };
 		AA1234770001 /* SoundService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundService.swift; sourceTree = "<group>"; };
+		AA12345B0003 /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
 		AA1234780001 /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
 		AA1234790001 /* CompletionAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionAnimationView.swift; sourceTree = "<group>"; };
 		AA1234800001 /* TimerSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerSettings.swift; sourceTree = "<group>"; };
@@ -49,6 +53,7 @@
 		AA1234820001 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AA1234830001 /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		AA1234840001 /* AlertWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertWindowManager.swift; sourceTree = "<group>"; };
+		AA1234850001 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +94,7 @@
 				AA1234650001 /* Utilities */,
 				AA1234660001 /* Resources */,
 				AA12345B0001 /* OKTimer.entitlements */,
+				AA12345B0002 /* Info.plist */,
 			);
 			path = OKTimer;
 			sourceTree = "<group>";
@@ -97,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				AA1234550001 /* OKTimerApp.swift */,
+				AA12345B0004 /* AppDelegate.swift */,
 				AA1234570001 /* ContentView.swift */,
 			);
 			path = App;
@@ -112,6 +119,7 @@
 				AA1234760001 /* TimerDisplayView.swift */,
 				AA1234790001 /* CompletionAnimationView.swift */,
 				AA1234820001 /* SettingsView.swift */,
+				AA1234850001 /* ConfettiView.swift */,
 );
 			path = Views;
 			sourceTree = "<group>";
@@ -138,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 							AA1234770001 /* SoundService.swift */,
+				AA12345B0003 /* BackgroundTaskManager.swift */,
 				AA1234780001 /* HapticService.swift */,
 				AA1234840001 /* AlertWindowManager.swift */,
 );
@@ -261,7 +270,9 @@
 				AA1234810001A0001 /* SettingsViewModel.swift in Sources */,
 				AA1234820001A0001 /* SettingsView.swift in Sources */,
 				AA1234830001A0001 /* ColorTheme.swift in Sources */,
-				AA1234840001A0001 /* AlertWindowManager.swift in Sources */,			);
+				AA1234840001A0001 /* AlertWindowManager.swift in Sources */,
+				AA1234850001A0001 /* ConfettiView.swift in Sources */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
@@ -392,7 +403,8 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+INFOPLIST_FILE = OKTimer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "OK Timer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -429,7 +441,8 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+INFOPLIST_FILE = OKTimer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "OK Timer";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

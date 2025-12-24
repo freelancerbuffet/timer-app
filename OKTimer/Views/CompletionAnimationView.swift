@@ -20,10 +20,12 @@ struct CompletionAnimationView: View {
     init(onDismiss: @escaping () -> Void, onSnooze: (() -> Void)? = nil) {
         self.onDismiss = onDismiss
         self.onSnooze = onSnooze
+        print("🎉 CompletionAnimationView: INITIALIZED")
     }
     
     var body: some View {
-        ZStack {
+        print("🎊 DEBUG: CompletionAnimationView body is being rendered")
+        return ZStack {
             // Semi-transparent background
             Color.black.opacity(0.6)
                 .ignoresSafeArea()
@@ -135,6 +137,7 @@ struct CompletionAnimationView: View {
             }
         }
         .onAppear {
+            print("🎉 CompletionAnimationView: APPEARED - Starting animations")
             // Enhanced entrance animations
             withAnimation(.spring(response: 0.7, dampingFraction: 0.65)) {
                 scale = 1.0

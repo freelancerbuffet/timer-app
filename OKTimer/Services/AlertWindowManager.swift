@@ -13,12 +13,14 @@ import AppKit
 
 @MainActor
 class AlertWindowManager: ObservableObject {
+    static let shared = AlertWindowManager()
+    
     private var alertWindow: NSWindow?
     private var dismissCallback: (() -> Void)?
     private var snoozeCallback: (() -> Void)?
     private var isShowingAlert = false
     
-    init() {}
+    private init() {}
     
     deinit {
         // Ensure cleanup on deallocation

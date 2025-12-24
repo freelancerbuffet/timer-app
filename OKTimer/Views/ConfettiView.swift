@@ -12,18 +12,21 @@ struct ConfettiView: View {
     let colors: [Color] = [.red, .orange, .yellow, .green, .blue, .purple, .pink, .cyan]
     
     var body: some View {
-        GeometryReader { geometry in
+        print("🌟 DEBUG: ConfettiView body is being rendered")
+        return GeometryReader { geometry in
             ZStack {
-                ForEach(particles) { particle in
-                    ConfettiShape(type: particle.type)
-                        .fill(particle.color)
-                        .frame(width: particle.size, height: particle.size)
-                        .position(particle.position)
-                        .rotationEffect(.degrees(particle.rotation))
-                        .opacity(particle.opacity)
+                // Confetti particles
+                ForEach(particles.indices, id: \.self) { index in
+                    ConfettiShape(type: particles[index].type)
+                        .fill(particles[index].color)
+                        .frame(width: particles[index].size, height: particles[index].size)
+                        .position(particles[index].position)
+                        .rotationEffect(.degrees(particles[index].rotation))
+                        .opacity(particles[index].opacity)
                 }
             }
             .onAppear {
+                print("🎊 DEBUG: ConfettiView onAppear called - starting animation")
                 startConfetti(in: geometry.size)
             }
         }
@@ -63,6 +66,29 @@ struct ConfettiView: View {
         // Remove particle after animation
         DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
             particles.removeAll { $0.id == particle.id }
+        }
+    }
+    
+    private func startAnimation() {
+        print("� DEBUG: ConfettiView startAnimation called - creating \(particles.count) particles")
+        
+        // First, make all particles visible and positioned at the top
+        for i in particles.indices {
+            particles[i].opacity = 1.0
+            particles[i].position.y = -50 // Start above the view
+        }
+        
+        // Then animate them falling down with different delays for staggered effect
+        for i in particles.indices {
+            let delay = Double.random(in: 0.0...0.5)
+            let duration = Double.random(in: 2.0...4.0)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                withAnimation(.easeIn(duration: duration)) {
+                    self.particles[i].position.y += 1000 // Fall down past the bottom
+                    self.particles[i].opacity = 0 // Fade out as they fall
+                }
+            }
         }
     }
 }
@@ -107,19 +133,19 @@ struct ConfettiShape: Shape {
         let center = CGPoint(x: rect.midX, y: rect.midY)
         let outerRadius = min(rect.width, rect.height) / 2
         let innerRadius = outerRadius * 0.4
-        let angleIncrement = .pi * 2 / 5
+        let angleIncrement = Double.pi * 2 / 5
         
         for i in 0..<5 {
-            let outerAngle = Double(i) * angleIncrement - .pi / 2
+            let outerAngle = Double(i) * angleIncrement - Double.pi / 2
             let innerAngle = outerAngle + angleIncrement / 2
             
             let outerPoint = CGPoint(
-                x: center.x + cos(outerAngle) * outerRadius,
-                y: center.y + sin(outerAngle) * outerRadius
+                x: center.x + cos(CGFloat(outerAngle)) * outerRadius,
+                y: center.y + sin(CGFloat(outerAngle)) * outerRadius
             )
             let innerPoint = CGPoint(
-                x: center.x + cos(innerAngle) * innerRadius,
-                y: center.y + sin(innerAngle) * innerRadius
+                x: center.x + cos(CGFloat(innerAngle)) * innerRadius,
+                y: center.y + sin(CGFloat(innerAngle)) * innerRadius
             )
             
             if i == 0 {
