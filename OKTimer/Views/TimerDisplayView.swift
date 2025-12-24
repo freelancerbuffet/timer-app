@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TimerDisplayView: View {
     @ObservedObject var viewModel: TimerViewModel
+    let theme: TimerSettings.ColorTheme
     @State private var isShowingPicker = false
     @State private var pickerMinutes = 5
     @State private var pickerSeconds = 0
@@ -24,7 +25,7 @@ struct TimerDisplayView: View {
     var body: some View {
         ZStack {
             // Progress ring
-            ProgressRingView(progress: viewModel.progress)
+            ProgressRingView(progress: viewModel.progress, theme: theme)
                 .frame(width: ringSize, height: ringSize)
                 .opacity(viewModel.timerState == .idle ? 0.3 : 1.0)
             
@@ -142,6 +143,6 @@ struct TimerDisplayView: View {
 }
 
 #Preview {
-    TimerDisplayView(viewModel: TimerViewModel())
+    TimerDisplayView(viewModel: TimerViewModel(), theme: .blue)
         .padding()
 }

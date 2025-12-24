@@ -19,6 +19,9 @@ class TimerViewModel: ObservableObject {
     private let soundService = SoundService.shared
     private let hapticService = HapticService.shared
     
+    // Settings
+    var settingsViewModel: SettingsViewModel?
+    
     // MARK: - Computed Properties
     
     var minutes: Int {
@@ -52,8 +55,10 @@ class TimerViewModel: ObservableObject {
         timerState = .running
         endDate = Date().addingTimeInterval(timeRemaining)
         
-        // Play haptic feedback
-        hapticService.timerStarted()
+        // Play haptic feedback if enabled
+        if settingsViewModel?.settings.hapticsEnabled ?? true {
+            hapticService.timerStarted()
+        }
         
         timer = Timer.publish(every: 0.1, on: .main, in: .common)
             .autoconnect()
@@ -68,8 +73,10 @@ class TimerViewModel: ObservableObject {
         timer?.cancel()
         timer = nil
         
-        // Play haptic feedback
-        hapticService.timerPaused()
+        // Play haptic feedback if enabled
+        if settingsViewModel?.settings.hapticsEnabled ?? true {
+            hapticService.timerPaused()
+        }
     }
     
     func resetTimer() {
@@ -80,8 +87,10 @@ class TimerViewModel: ObservableObject {
         endDate = nil
         showCompletionAnimation = false
         
-        // Play haptic feedback
-        hapticService.timerReset()
+        // Play haptic feedback if enabled
+        if settingsViewModel?.settings.hapticsEnabled ?? true {
+            hapticService.timerReset()
+        }
     }
     
     func setTime(minutes: Int, seconds: Int) {
@@ -96,8 +105,10 @@ class TimerViewModel: ObservableObject {
         timeRemaining = seconds
         totalTime = seconds
         
-        // Play haptic feedback for preset selection
-        hapticService.buttonTapped()
+        // Play haptic feedback for preset selection if enabled
+        if settingsViewModel?.settings.hapticsEnabled ?? true {
+            hapticService.buttonTapped()
+        }
     }
     
     // MARK: - Private Methods
@@ -113,9 +124,13 @@ class TimerViewModel: ObservableObject {
             timer?.cancel()
             timer = nil
             
-            // Play completion sound and haptic
-            soundService.playCompletionSound()
-            hapticService.timerCompleted()
+            // Play completion sound and haptic if enabled
+            if settingsViewModel?.settings.soundEnabled ?? true {
+                soundService.playCompletionSound()
+            }
+            if settingsViewModel?.settings.hapticsEnabled ?? true {
+                hapticService.timerCompleted()
+            }
             
             // Show completion animation
             showCompletionAnimation = true

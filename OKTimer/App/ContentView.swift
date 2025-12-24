@@ -9,20 +9,41 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var viewModel = TimerViewModel()
+    @StateObject private var settingsViewModel = SettingsViewModel()
+    @State private var showSettings = false
     
     var body: some View {
         VStack(spacing: 0) {
-            // Header
-            Text("OK TIMER")
-                .font(.system(size: 28, weight: .light, design: .rounded))
-                .foregroundColor(.primary.opacity(0.6))
-                .padding(.top, 40)
-                .padding(.bottom, 20)
+            // Header with settings button
+            HStack {
+                Text("OK TIMER")
+                    .font(.system(size: 28, weight: .light, design: .rounded))
+                    .foregroundColor(.primary.opacity(0.6))
+                
+                Spacer()
+                
+                Button(action: {
+                    showSettings = true
+                }) {
+                    Image(systemName: "gear")
+                        .font(.system(size: 18, weight: .regular))
+                        .foregroundColor(.primary.opacity(0.5))
+                        .frame(width: 36, height: 36)
+                        .background(
+                            Circle()
+                                .fill(Color.primary.opacity(0.06))
+                        )
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            .padding(.horizontal, 40)
+            .padding(.top, 40)
+            .padding(.bottom, 20)
             
             Spacer()
             
             // Main timer display with progress ring
-            TimerDisplayView(viewModel: viewModel)
+            TimerDisplayView(viewModel: viewModel, theme: settingsViewModel.settings.theme)
                 .padding(.vertical, 30)
             
             Spacer()
@@ -62,6 +83,12 @@ struct ContentView: View {
                 })
                 .transition(.opacity)
             }
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView(settingsViewModel: settingsViewModel)
+        }
+        .onAppear {
+            viewModel.settingsViewModel = settingsViewModel
         }
     }
 }

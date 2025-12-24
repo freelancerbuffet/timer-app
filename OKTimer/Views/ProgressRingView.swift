@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProgressRingView: View {
     let progress: Double
+    let theme: TimerSettings.ColorTheme
     let lineWidth: CGFloat = 12
     
     var body: some View {
@@ -36,21 +37,16 @@ struct ProgressRingView: View {
     }
     
     private var gradientForProgress: LinearGradient {
-        let colors: [Color]
+        let colors = theme.progressGradientColors
+        let colorCount = colors.count
         
-        if progress < 0.33 {
-            // Start phase: Blue to Cyan
-            colors = [.blue, .cyan]
-        } else if progress < 0.66 {
-            // Middle phase: Cyan to Orange
-            colors = [.cyan, .orange]
-        } else {
-            // Final phase: Orange to Red
-            colors = [.orange, .red]
-        }
+        // Determine which colors to use based on progress
+        let index = Int(progress * Double(colorCount - 1))
+        let startIndex = min(index, colorCount - 2)
+        let endIndex = startIndex + 1
         
         return LinearGradient(
-            colors: colors,
+            colors: [colors[startIndex], colors[endIndex]],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
@@ -59,13 +55,13 @@ struct ProgressRingView: View {
 
 #Preview {
     VStack(spacing: 40) {
-        ProgressRingView(progress: 0.25)
+        ProgressRingView(progress: 0.25, theme: .blue)
             .frame(width: 250, height: 250)
         
-        ProgressRingView(progress: 0.5)
+        ProgressRingView(progress: 0.5, theme: .green)
             .frame(width: 250, height: 250)
         
-        ProgressRingView(progress: 0.75)
+        ProgressRingView(progress: 0.75, theme: .orange)
             .frame(width: 250, height: 250)
     }
     .padding()
