@@ -20,8 +20,8 @@ struct TimePickerView: View {
                     Text("\(minute)").tag(minute)
                 }
             }
-            .pickerStyle(.wheel)
-            .frame(width: 70, height: 100)
+            .pickerStyle(.menu)
+            .frame(width: 70, height: 30)
             .clipped()
             .disabled(isDisabled)
             
@@ -35,8 +35,8 @@ struct TimePickerView: View {
                     Text("\(second)").tag(second)
                 }
             }
-            .pickerStyle(.wheel)
-            .frame(width: 70, height: 100)
+            .pickerStyle(.menu)
+            .frame(width: 70, height: 30)
             .clipped()
             .disabled(isDisabled)
         }
