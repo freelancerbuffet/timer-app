@@ -54,7 +54,7 @@ struct TimerDisplayView: View {
                 }
             }
         }
-        .onChange(of: viewModel.timerState) { oldValue, newState in
+        .onChange(of: viewModel.timerState) { _, newState in
             if newState == .idle {
                 pickerMinutes = viewModel.minutes
                 pickerSeconds = viewModel.seconds

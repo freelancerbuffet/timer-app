@@ -222,7 +222,7 @@
 			files = (
 				AA1234580001 /* ContentView.swift in Sources */,
 				AA1234560001 /* OKTimerApp.swift in Sources */,
-							AA1234700001A0001 /* TimerState.swift in Sources */,
+				AA1234700001A0001 /* TimerState.swift in Sources */,
 				AA1234710001A0001 /* TimerViewModel.swift in Sources */,
 				AA1234720001A0001 /* ProgressRingView.swift in Sources */,
 				AA1234730001A0001 /* PresetButtonsView.swift in Sources */,
