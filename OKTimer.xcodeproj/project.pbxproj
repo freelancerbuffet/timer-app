@@ -24,6 +24,8 @@
 		AA1234810001A0001 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234810001 /* SettingsViewModel.swift */; };
 		AA1234820001A0001 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234820001 /* SettingsView.swift */; };
 		AA1234830001A0001 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234830001 /* ColorTheme.swift */; };
+		AA1234840001A0001 /* AlertWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234840001 /* AlertWindowManager.swift */; };
+		AA1234850001A0001 /* FullscreenAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234850001 /* FullscreenAlertView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		AA1234810001 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		AA1234820001 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AA1234830001 /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
+		AA1234840001 /* AlertWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertWindowManager.swift; sourceTree = "<group>"; };
+		AA1234850001 /* FullscreenAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenAlertView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +112,7 @@
 				AA1234750001 /* TimerControlsView.swift */,
 				AA1234760001 /* TimerDisplayView.swift */,
 				AA1234790001 /* CompletionAnimationView.swift */,
+				AA1234850001 /* FullscreenAlertView.swift */,
 				AA1234820001 /* SettingsView.swift */,
 );
 			path = Views;
@@ -136,6 +141,7 @@
 			children = (
 							AA1234770001 /* SoundService.swift */,
 				AA1234780001 /* HapticService.swift */,
+				AA1234840001 /* AlertWindowManager.swift */,
 );
 			path = Services;
 			sourceTree = "<group>";
@@ -257,6 +263,8 @@
 				AA1234810001A0001 /* SettingsViewModel.swift in Sources */,
 				AA1234820001A0001 /* SettingsView.swift in Sources */,
 				AA1234830001A0001 /* ColorTheme.swift in Sources */,
+				AA1234840001A0001 /* AlertWindowManager.swift in Sources */,
+				AA1234850001A0001 /* FullscreenAlertView.swift in Sources */,
 );
 			runOnlyForDeploymentPostprocessing = 0;
 		};

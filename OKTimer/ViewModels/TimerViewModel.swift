@@ -20,7 +20,6 @@ class TimerViewModel: ObservableObject {
     private let soundService = SoundService.shared
     private let hapticService = HapticService.shared
     private let alertWindowManager = AlertWindowManager.shared
-    private let appFeatures = AppFeatures.shared
     
     // Settings
     var settingsViewModel: SettingsViewModel?
@@ -58,13 +57,6 @@ class TimerViewModel: ObservableObject {
         timerState = .running
         endDate = Date().addingTimeInterval(timeRemaining)
         
-        // Schedule notification for when timer completes
-        appFeatures.scheduleNotification(
-            title: "⏰ Timer Complete",
-            body: "Your \(Int(totalTime / 60)) minute timer has finished!",
-            delay: timeRemaining
-        )
-        
         // Play haptic feedback if enabled
         if settingsViewModel?.settings.hapticsEnabled ?? true {
             hapticService.timerStarted()
@@ -83,9 +75,6 @@ class TimerViewModel: ObservableObject {
         timer?.cancel()
         timer = nil
         
-        // Cancel notification when paused
-        appFeatures.cancelAllNotifications()
-        
         // Play haptic feedback if enabled
         if settingsViewModel?.settings.hapticsEnabled ?? true {
             hapticService.timerPaused()
@@ -100,8 +89,6 @@ class TimerViewModel: ObservableObject {
         endDate = nil
         showCompletionAnimation = false
         showFullscreenAlert = false
-        alertWindowManager.dismissAlert()
-        appFeatures.cancelAllNotifications()
         
         // Play haptic feedback if enabled
         if settingsViewModel?.settings.hapticsEnabled ?? true {
@@ -113,7 +100,6 @@ class TimerViewModel: ObservableObject {
         // Snooze for 5 minutes
         showCompletionAnimation = false
         showFullscreenAlert = false
-        alertWindowManager.dismissAlert()
         
         timeRemaining = 300 // 5 minutes
         totalTime = 300

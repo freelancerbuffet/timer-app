@@ -97,6 +97,7 @@ struct ContentView: View {
         }
         .preferredColorScheme(.none)
         .overlay {
+            // Completion animation overlay (primarily for iOS)
             if viewModel.showCompletionAnimation {
                 CompletionAnimationView(
                     onDismiss: {
@@ -119,7 +120,6 @@ struct ContentView: View {
         .onAppear {
             viewModel.settingsViewModel = settingsViewModel
         }
-        .timerKeyboardShortcuts(viewModel: viewModel)
     }
 }
 
