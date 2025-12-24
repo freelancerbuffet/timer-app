@@ -17,6 +17,9 @@
 		AA1234740001A0001 /* TimePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234740001 /* TimePickerView.swift */; };
 		AA1234750001A0001 /* TimerControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234750001 /* TimerControlsView.swift */; };
 		AA1234760001A0001 /* TimerDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234760001 /* TimerDisplayView.swift */; };
+		AA1234770001A0001 /* SoundService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234770001 /* SoundService.swift */; };
+		AA1234780001A0001 /* HapticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234780001 /* HapticService.swift */; };
+		AA1234790001A0001 /* CompletionAnimationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234790001 /* CompletionAnimationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		AA1234740001 /* TimePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePickerView.swift; sourceTree = "<group>"; };
 		AA1234750001 /* TimerControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerControlsView.swift; sourceTree = "<group>"; };
 		AA1234760001 /* TimerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDisplayView.swift; sourceTree = "<group>"; };
+		AA1234770001 /* SoundService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundService.swift; sourceTree = "<group>"; };
+		AA1234780001 /* HapticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticService.swift; sourceTree = "<group>"; };
+		AA1234790001 /* CompletionAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionAnimationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +99,7 @@
 				AA1234740001 /* TimePickerView.swift */,
 				AA1234750001 /* TimerControlsView.swift */,
 				AA1234760001 /* TimerDisplayView.swift */,
+				AA1234790001 /* CompletionAnimationView.swift */,
 );
 			path = Views;
 			sourceTree = "<group>";
@@ -116,7 +123,9 @@
 		AA1234640001 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-			);
+							AA1234770001 /* SoundService.swift */,
+				AA1234780001 /* HapticService.swift */,
+);
 			path = Services;
 			sourceTree = "<group>";
 		};
@@ -229,6 +238,9 @@
 				AA1234740001A0001 /* TimePickerView.swift in Sources */,
 				AA1234750001A0001 /* TimerControlsView.swift in Sources */,
 				AA1234760001A0001 /* TimerDisplayView.swift in Sources */,
+				AA1234770001A0001 /* SoundService.swift in Sources */,
+				AA1234780001A0001 /* HapticService.swift in Sources */,
+				AA1234790001A0001 /* CompletionAnimationView.swift in Sources */,
 );
 			runOnlyForDeploymentPostprocessing = 0;
 		};

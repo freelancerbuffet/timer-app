@@ -53,6 +53,16 @@ struct ContentView: View {
             #endif
         }
         .preferredColorScheme(.none)
+        .overlay {
+            if viewModel.showCompletionAnimation {
+                CompletionAnimationView(onDismiss: {
+                    withAnimation {
+                        viewModel.dismissCompletionAnimation()
+                    }
+                })
+                .transition(.opacity)
+            }
+        }
     }
 }
 

@@ -12,9 +12,12 @@ class TimerViewModel: ObservableObject {
     @Published var timeRemaining: TimeInterval = 300 // 5 minutes default
     @Published var totalTime: TimeInterval = 300
     @Published var timerState: TimerState = .idle
+    @Published var showCompletionAnimation = false
     
     private var timer: AnyCancellable?
     private var endDate: Date?
+    private let soundService = SoundService.shared
+    private let hapticService = HapticService.shared
     
     // MARK: - Computed Properties
     
@@ -49,6 +52,9 @@ class TimerViewModel: ObservableObject {
         timerState = .running
         endDate = Date().addingTimeInterval(timeRemaining)
         
+        // Play haptic feedback
+        hapticService.timerStarted()
+        
         timer = Timer.publish(every: 0.1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
@@ -61,6 +67,9 @@ class TimerViewModel: ObservableObject {
         timerState = .paused
         timer?.cancel()
         timer = nil
+        
+        // Play haptic feedback
+        hapticService.timerPaused()
     }
     
     func resetTimer() {
@@ -69,6 +78,10 @@ class TimerViewModel: ObservableObject {
         timeRemaining = totalTime
         timerState = .idle
         endDate = nil
+        showCompletionAnimation = false
+        
+        // Play haptic feedback
+        hapticService.timerReset()
     }
     
     func setTime(minutes: Int, seconds: Int) {
@@ -82,6 +95,9 @@ class TimerViewModel: ObservableObject {
         guard timerState == .idle else { return }
         timeRemaining = seconds
         totalTime = seconds
+        
+        // Play haptic feedback for preset selection
+        hapticService.buttonTapped()
     }
     
     // MARK: - Private Methods
@@ -96,8 +112,19 @@ class TimerViewModel: ObservableObject {
             timerState = .completed
             timer?.cancel()
             timer = nil
+            
+            // Play completion sound and haptic
+            soundService.playCompletionSound()
+            hapticService.timerCompleted()
+            
+            // Show completion animation
+            showCompletionAnimation = true
         } else {
             timeRemaining = remaining
         }
+    }
+    
+    func dismissCompletionAnimation() {
+        showCompletionAnimation = false
     }
 }
