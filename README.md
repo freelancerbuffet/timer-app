@@ -1,10 +1,270 @@
-# OK TIMER - Development Roadmap
+# ⏰ OK TIMER
 
-A beautifully minimalistic timer application for iOS and macOS built with SwiftUI.
+<div align="center">
 
-## 🎯 Project Vision
+**A beautifully minimalistic timer application for iOS and macOS**
 
-OK TIMER is designed to be **minimalistic**, **translucent**, and **classy** - a timer app that captures attention through delightful animations and gentle sound notifications when the timer completes.
+[![Platform](https://img.shields.io/badge/Platform-iOS%2015%2B%20%7C%20macOS%2012%2B-blue)](https://developer.apple.com/)
+[![Swift](https://img.shields.io/badge/Swift-5.9-orange)](https://swift.org/)
+[![SwiftUI](https://img.shields.io/badge/SwiftUI-3.0-green)](https://developer.apple.com/xcode/swiftui/)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+
+[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Screenshots](#-screenshots) • [Architecture](#-architecture)
+
+</div>
+
+---
+
+## ✨ Features
+
+### Core Functionality
+- ⏱️ **Precise Timer** - Countdown with 0.1 second precision using Combine
+- 🎯 **Quick Presets** - One-tap access to 1, 5, 10, 15, and 30 minute timers
+- ⌨️ **Keyboard Input** - Type timer duration directly for ultimate speed
+- 🎨 **5 Beautiful Themes** - Blue, Green, Orange, Purple, and Monochrome color schemes
+- 🔄 **Progress Ring** - Animated circular progress with dynamic gradient colors
+
+### User Experience
+- 🎉 **Celebration Animations** - Confetti and stars when timer completes
+- 🚨 **Fullscreen Alerts** (macOS) - Impossible-to-miss alerts that takeover your entire screen
+- 😴 **Snooze Function** - Quick 5-minute snooze with auto-restart
+- 🔊 **Sound Effects** - Pleasant chime on completion (toggleable)
+- 📳 **Haptic Feedback** (iOS) - Tactile response for all actions (toggleable)
+- 🔔 **Background Notifications** - Get alerted even when app is closed
+
+### Design & Accessibility
+- 🌓 **Dark/Light Mode** - Automatic theme support
+- 💎 **Translucent UI** - Ultra-thin material blur effects
+- ♿ **Full Accessibility** - VoiceOver support with descriptive labels
+- 📱 **Responsive Layout** - Optimized for all screen sizes
+- ⌨️ **Keyboard Shortcuts** (macOS) - Cmd+S, Cmd+R, Cmd+1, Cmd+5
+
+### Advanced Features
+- ⚙️ **Customizable Settings** - Audio, haptics, and theme preferences
+- 💾 **Persistent State** - All settings saved automatically
+- 🎯 **Radial Progress View** - Beautiful minimalist view when app loses focus
+- 🔗 **URL Scheme Support** - oktimer:// for automation and shortcuts
+
+---
+
+## 📱 Installation
+
+### Requirements
+- **iOS**: 15.0 or later
+- **macOS**: 12.0 (Monterey) or later
+- **Xcode**: 14.0 or later
+- **Swift**: 5.9 or later
+
+### Build from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/freelancerbuffet/timer-app.git
+cd timer-app
+
+# Open in Xcode
+open OKTimer.xcodeproj
+
+# Select your target (iOS or macOS) and run
+```
+
+---
+
+## 🎯 Usage
+
+### Basic Operations
+
+1. **Set Time**: Tap the timer display and enter minutes/seconds, or use preset buttons
+2. **Start**: Tap the Start button or press `Cmd+S` (macOS)
+3. **Pause**: Tap Pause during countdown or press `Cmd+S` (macOS)
+4. **Reset**: Tap Reset or press `Cmd+R` (macOS)
+
+### Keyboard Shortcuts (macOS)
+
+| Shortcut | Action |
+|----------|--------|
+| `Cmd+S` | Start/Pause timer |
+| `Cmd+R` | Reset timer |
+| `Cmd+1` | Set 1 minute timer |
+| `Cmd+5` | Set 5 minute timer |
+
+### Settings
+
+Access settings via the gear icon to customize:
+- **Sound Effects** - Toggle completion chime on/off
+- **Haptic Feedback** (iOS) - Enable/disable haptic responses
+- **Theme** - Choose from 5 color schemes
+
+---
+
+## 📸 Screenshots
+
+### iOS
+<details>
+<summary>View iOS Screenshots</summary>
+
+*Timer Display with Progress Ring*
+- Clean, minimalist interface
+- Circular progress with gradient
+- Quick preset buttons
+
+*Completion Celebration*
+- Confetti animation
+- Animated checkmark
+- Snooze or dismiss options
+
+*Settings*
+- Beautiful card-based layout
+- Theme picker with previews
+- Audio and haptic toggles
+
+</details>
+
+### macOS
+<details>
+<summary>View macOS Screenshots</summary>
+
+*Main Timer Window*
+- Translucent blur background
+- Keyboard-friendly input
+- Smooth animations
+
+*Fullscreen Alert*
+- Takes over entire screen
+- Impossible to miss
+- Pulsing bell icon with confetti
+- Gradient action buttons
+
+*Radial Progress Indicator*
+- Minimalist progress ring
+- Starts at 12 o'clock position
+- Dynamic gradient colors
+- Friendly to eyes
+
+</details>
+
+---
+
+## 🏗️ Architecture
+
+### MVVM Pattern with SwiftUI
+
+```
+OKTimer/
+├── App/
+│   ├── OKTimerApp.swift          # App entry point
+│   └── ContentView.swift         # Main view
+├── Models/
+│   ├── TimerState.swift          # Timer state enum
+│   ├── TimerSettings.swift       # Settings model
+│   └── TimerSession.swift        # Session tracking
+├── ViewModels/
+│   ├── TimerViewModel.swift      # Timer business logic
+│   └── SettingsViewModel.swift   # Settings management
+├── Views/
+│   ├── TimerDisplayView.swift    # Main timer display
+│   ├── ProgressRingView.swift    # Circular progress
+│   ├── TimerControlsView.swift   # Start/Pause/Reset buttons
+│   ├── PresetButtonsView.swift   # Quick presets
+│   ├── TimePickerView.swift      # Time input
+│   ├── SettingsView.swift        # Settings interface
+│   ├── CompletionAnimationView.swift  # iOS completion
+│   ├── ConfettiView.swift        # Celebration effects
+│   └── RadialProgressIndicator.swift  # Minimalist progress
+├── Services/
+│   ├── SoundService.swift        # Audio playback
+│   ├── HapticService.swift       # Haptic feedback (iOS)
+│   └── AlertWindowManager.swift  # macOS alert windows
+└── Utilities/
+    ├── ColorTheme.swift          # Theme definitions
+    ├── KeyboardShortcuts.swift   # Keyboard support
+    └── AppFeatures.swift         # Notifications & features
+```
+
+### Key Technologies
+
+- **SwiftUI** - Modern declarative UI framework
+- **Combine** - Reactive timer updates with 0.1s precision
+- **UserDefaults** - Settings and preference persistence
+- **UserNotifications** - Background notification support
+- **AVFoundation** - Audio playback for completion sounds
+- **AppKit** (macOS) - Window management for fullscreen alerts
+- **UIKit** (iOS) - Haptic feedback generation
+
+---
+
+## 🎨 Design Philosophy
+
+OK Timer follows these core principles:
+
+1. **Minimalism** - Only essential features, nothing more
+2. **Beauty** - Smooth animations and delightful interactions
+3. **Clarity** - Clean typography and intuitive interface
+4. **Accessibility** - VoiceOver support for all users
+5. **Performance** - 60fps animations, efficient battery use
+6. **Privacy** - All data stored locally, no tracking
+
+---
+
+## 🚀 Roadmap
+
+### Future Enhancements
+- [ ] Apple Watch companion app
+- [ ] Live Activities with Dynamic Island support
+- [ ] Siri Shortcuts integration
+- [ ] Focus Mode automation
+- [ ] iCloud sync across devices
+- [ ] Session statistics and history
+- [ ] Custom sound effects
+- [ ] Multiple timer support
+- [ ] Timer templates
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+### Development Setup
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Design inspired by modern iOS/macOS design principles
+- Built with ❤️ using SwiftUI and Combine
+- Special thanks to the Swift and SwiftUI communities
+
+---
+
+## 📧 Contact
+
+For questions, suggestions, or feedback:
+- Open an issue on GitHub
+- Submit a pull request
+- Contact the maintainers
+
+---
+
+<div align="center">
+
+**Made with ⏰ and ❤️**
+
+⭐ Star this repo if you find it useful!
+
+</div>
 
 ## ✅ Current Status
 

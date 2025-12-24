@@ -11,6 +11,8 @@ struct CompletionAnimationView: View {
     @State private var scale: CGFloat = 0.5
     @State private var opacity: Double = 0
     @State private var rotation: Double = 0
+    @State private var showConfetti = false
+    @State private var starScale: CGFloat = 0.5
     
     let onDismiss: () -> Void
     let onSnooze: (() -> Void)?
@@ -23,73 +25,109 @@ struct CompletionAnimationView: View {
     var body: some View {
         ZStack {
             // Semi-transparent background
-            Color.black.opacity(0.4)
+            Color.black.opacity(0.6)
                 .ignoresSafeArea()
                 .onTapGesture {
                     onDismiss()
                 }
             
-            VStack(spacing: 24) {
-                // Checkmark icon
+            // Confetti layer
+            if showConfetti {
+                ConfettiView()
+                    .ignoresSafeArea()
+            }
+            
+            VStack(spacing: 32) {
+                // Checkmark icon with enhanced glow
                 ZStack {
+                    // Outer glow
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                colors: [Color.green.opacity(0.6), Color.mint.opacity(0.3), Color.clear],
+                                center: .center,
+                                startRadius: 40,
+                                endRadius: 100
+                            )
+                        )
+                        .frame(width: 200, height: 200)
+                        .scaleEffect(starScale)
+                    
                     Circle()
                         .fill(
                             LinearGradient(
-                                colors: [.green, .mint],
+                                colors: [.green, .mint, .cyan],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: 100, height: 100)
+                        .frame(width: 120, height: 120)
+                        .shadow(color: .green.opacity(0.5), radius: 20)
                     
                     Image(systemName: "checkmark")
-                        .font(.system(size: 50, weight: .bold))
+                        .font(.system(size: 60, weight: .bold))
                         .foregroundColor(.white)
+                        .shadow(color: .white.opacity(0.5), radius: 10)
                 }
                 .scaleEffect(scale)
                 .rotationEffect(.degrees(rotation))
                 
-                // Completion message
-                VStack(spacing: 8) {
-                    Text("Time's Up!")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                // Completion message with enhanced styling
+                VStack(spacing: 12) {
+                    Text("🎉 Time's Up!")
+                        .font(.system(size: 40, weight: .black, design: .rounded))
                         .foregroundColor(.white)
+                        .shadow(color: .green.opacity(0.5), radius: 10)
+                        .shadow(color: .mint.opacity(0.3), radius: 20)
                     
                     Text("Well done!")
-                        .font(.system(size: 18, weight: .medium, design: .rounded))
-                        .foregroundColor(.white.opacity(0.8))
+                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                        .foregroundColor(.white.opacity(0.9))
                 }
                 .opacity(opacity)
                 
-                // Action buttons
-                VStack(spacing: 12) {
+                // Enhanced action buttons
+                VStack(spacing: 14) {
                     Button(action: onDismiss) {
-                        Text("OK")
-                            .font(.system(size: 17, weight: .semibold, design: .rounded))
-                            .foregroundColor(.white)
-                            .frame(width: 200, height: 44)
-                            .background {
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(
-                                        LinearGradient(
-                                            colors: [.blue, .cyan],
-                                            startPoint: .leading,
-                                            endPoint: .trailing
-                                        )
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 18))
+                            Text("OK")
+                                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        }
+                        .foregroundColor(.white)
+                        .frame(width: 220, height: 52)
+                        .background {
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [.blue, .cyan],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
                                     )
-                            }
+                                )
+                                .shadow(color: .cyan.opacity(0.4), radius: 12)
+                        }
                     }
                     
                     if let onSnooze = onSnooze {
                         Button(action: onSnooze) {
-                            Text("Snooze 5 min")
-                                .font(.system(size: 15, weight: .medium, design: .rounded))
-                                .foregroundColor(.white.opacity(0.9))
-                                .frame(width: 200, height: 38)
-                                .background {
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color.white.opacity(0.15))
-                                }
+                            HStack {
+                                Image(systemName: "moon.zzz.fill")
+                                    .font(.system(size: 16))
+                                Text("Snooze 5 min")
+                                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                            }
+                            .foregroundColor(.white.opacity(0.95))
+                            .frame(width: 220, height: 46)
+                            .background {
+                                RoundedRectangle(cornerRadius: 14)
+                                    .fill(Color.white.opacity(0.15))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 14)
+                                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                                    )
+                            }
                         }
                     }
                 }
@@ -97,13 +135,27 @@ struct CompletionAnimationView: View {
             }
         }
         .onAppear {
-            withAnimation(.spring(response: 0.6, dampingFraction: 0.7)) {
+            // Enhanced entrance animations
+            withAnimation(.spring(response: 0.7, dampingFraction: 0.65)) {
                 scale = 1.0
                 rotation = 360
             }
             
-            withAnimation(.easeOut(duration: 0.4).delay(0.2)) {
+            withAnimation(.easeOut(duration: 0.5).delay(0.25)) {
                 opacity = 1.0
+            }
+            
+            // Start confetti
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                showConfetti = true
+            }
+            
+            // Pulsing glow animation
+            withAnimation(
+                Animation.easeInOut(duration: 1.5)
+                    .repeatForever(autoreverses: true)
+            ) {
+                starScale = 1.0
             }
         }
     }

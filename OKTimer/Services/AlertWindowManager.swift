@@ -193,60 +193,150 @@ class AlertWindowManager: ObservableObject {
 }
 #endif
 
-// Simple alert view with minimal state and animation to avoid memory issues
+// Simple alert view with confetti and beautiful animations
 private struct SimpleFullscreenAlertView: View {
     let onDismiss: () -> Void
     let onSnooze: () -> Void
     
+    @State private var scale: CGFloat = 0.3
+    @State private var bellScale: CGFloat = 1.0
+    @State private var opacity: Double = 0
+    @State private var showConfetti = false
+    
     var body: some View {
         ZStack {
-            Color.black.opacity(0.9)
+            Color.black.opacity(0.95)
                 .ignoresSafeArea()
             
-            VStack(spacing: 32) {
+            // Confetti layer
+            if showConfetti {
+                ConfettiView()
+                    .ignoresSafeArea()
+            }
+            
+            VStack(spacing: 40) {
                 Spacer()
                 
-                // Alert icon
+                // Alert icon with pulsing animation
                 ZStack {
+                    // Glow effect
                     Circle()
-                        .fill(Color.red)
-                        .frame(width: 120, height: 120)
+                        .fill(
+                            RadialGradient(
+                                colors: [Color.red.opacity(0.6), Color.orange.opacity(0.3), Color.clear],
+                                center: .center,
+                                startRadius: 50,
+                                endRadius: 120
+                            )
+                        )
+                        .frame(width: 240, height: 240)
+                        .scaleEffect(bellScale)
+                    
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [.red, .orange, .yellow],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 140, height: 140)
+                        .scaleEffect(bellScale)
                     
                     Image(systemName: "bell.fill")
-                        .font(.system(size: 60, weight: .bold))
+                        .font(.system(size: 70, weight: .bold))
                         .foregroundColor(.white)
+                        .shadow(color: .white.opacity(0.5), radius: 10)
+                        .scaleEffect(bellScale)
                 }
+                .scaleEffect(scale)
                 
-                // Message
-                VStack(spacing: 12) {
+                // Message with enhanced styling
+                VStack(spacing: 20) {
                     Text("⏰ TIME'S UP!")
-                        .font(.system(size: 40, weight: .bold, design: .rounded))
+                        .font(.system(size: 56, weight: .black, design: .rounded))
                         .foregroundColor(.white)
+                        .shadow(color: .red.opacity(0.5), radius: 15)
+                        .shadow(color: .orange.opacity(0.3), radius: 30)
                     
                     Text("Your timer has completed")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(.white.opacity(0.8))
+                        .font(.system(size: 22, weight: .medium, design: .rounded))
+                        .foregroundColor(.white.opacity(0.9))
                 }
+                .opacity(opacity)
                 
                 Spacer()
                 
-                // Buttons
-                VStack(spacing: 12) {
-                    Button("Dismiss", action: onDismiss)
-                        .font(.system(size: 18, weight: .semibold))
+                // Enhanced buttons with gradients
+                VStack(spacing: 16) {
+                    Button(action: onDismiss) {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 20, weight: .semibold))
+                            Text("Dismiss")
+                                .font(.system(size: 20, weight: .semibold, design: .rounded))
+                        }
                         .foregroundColor(.white)
-                        .frame(maxWidth: 250, minHeight: 50)
-                        .background(Color.blue)
-                        .cornerRadius(12)
+                        .frame(maxWidth: 320, minHeight: 64)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(
+                                    LinearGradient(
+                                        colors: [.blue, .cyan],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .shadow(color: .cyan.opacity(0.5), radius: 15)
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
                     
-                    Button("Snooze 5 min", action: onSnooze)
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.white.opacity(0.9))
-                        .frame(maxWidth: 250, minHeight: 45)
-                        .background(Color.white.opacity(0.2))
-                        .cornerRadius(12)
+                    Button(action: onSnooze) {
+                        HStack {
+                            Image(systemName: "moon.zzz.fill")
+                                .font(.system(size: 18, weight: .medium))
+                            Text("Snooze 5 min")
+                                .font(.system(size: 18, weight: .medium, design: .rounded))
+                        }
+                        .foregroundColor(.white.opacity(0.95))
+                        .frame(maxWidth: 320, minHeight: 56)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.white.opacity(0.15))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                                )
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
                 }
-                .padding(.bottom, 50)
+                .opacity(opacity)
+                .padding(.bottom, 60)
+            }
+        }
+        .onAppear {
+            // Entrance animations
+            withAnimation(.spring(response: 0.8, dampingFraction: 0.6)) {
+                scale = 1.0
+            }
+            
+            withAnimation(.easeOut(duration: 0.5).delay(0.3)) {
+                opacity = 1.0
+            }
+            
+            // Start confetti after a brief delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                showConfetti = true
+            }
+            
+            // Pulsing bell animation
+            withAnimation(
+                Animation.easeInOut(duration: 1.0)
+                    .repeatForever(autoreverses: true)
+            ) {
+                bellScale = 1.15
             }
         }
     }
