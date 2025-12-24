@@ -10,12 +10,32 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var viewModel = TimerViewModel()
     @StateObject private var settingsViewModel = SettingsViewModel()
+    @StateObject private var historyManager = SessionHistoryManager()
     @State private var showSettings = false
+    @State private var showStatistics = false
     
     var body: some View {
         VStack(spacing: 0) {
             // Header with settings button
             HStack {
+                Button(action: {
+                    showStatistics = true
+                }) {
+                    Image(systemName: "chart.bar")
+                        .font(.system(size: 18, weight: .regular))
+                        .foregroundColor(.primary.opacity(0.5))
+                        .frame(width: 36, height: 36)
+                        .background(
+                            Circle()
+                                .fill(Color.primary.opacity(0.06))
+                        )
+                }
+                .buttonStyle(PlainButtonStyle())
+                .accessibilityLabel("Statistics")
+                .accessibilityHint("View your timer statistics and history")
+                
+                Spacer()
+                
                 Text("OK TIMER")
                     .font(.system(size: 28, weight: .light, design: .rounded))
                     .foregroundColor(.primary.opacity(0.6))
@@ -35,6 +55,8 @@ struct ContentView: View {
                         )
                 }
                 .buttonStyle(PlainButtonStyle())
+                .accessibilityLabel("Settings")
+                .accessibilityHint("Open settings to customize sound, haptics, and theme")
             }
             .padding(.horizontal, 40)
             .padding(.top, 40)
@@ -87,8 +109,12 @@ struct ContentView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView(settingsViewModel: settingsViewModel)
         }
+        .sheet(isPresented: $showStatistics) {
+            StatisticsView(historyManager: historyManager)
+        }
         .onAppear {
             viewModel.settingsViewModel = settingsViewModel
+            viewModel.historyManager = historyManager
         }
     }
 }

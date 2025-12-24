@@ -22,6 +22,9 @@ class TimerViewModel: ObservableObject {
     // Settings
     var settingsViewModel: SettingsViewModel?
     
+    // Session tracking
+    var historyManager: SessionHistoryManager?
+    
     // MARK: - Computed Properties
     
     var minutes: Int {
@@ -131,6 +134,10 @@ class TimerViewModel: ObservableObject {
             if settingsViewModel?.settings.hapticsEnabled ?? true {
                 hapticService.timerCompleted()
             }
+            
+            // Track completed session
+            let session = TimerSession(duration: totalTime, completedAt: Date(), wasCompleted: true)
+            historyManager?.addSession(session)
             
             // Show completion animation
             showCompletionAnimation = true

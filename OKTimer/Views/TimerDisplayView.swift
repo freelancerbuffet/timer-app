@@ -96,6 +96,7 @@ struct TimerDisplayView: View {
                 .foregroundColor(textColor)
                 .monospacedDigit()
                 .animation(.easeInOut(duration: 0.2), value: viewModel.formattedTime)
+                .accessibilityLabel("Timer: \(viewModel.minutes) minutes, \(viewModel.seconds) seconds")
             
             if viewModel.timerState == .idle {
                 HStack(spacing: 4) {
@@ -107,6 +108,7 @@ struct TimerDisplayView: View {
                 .foregroundColor(.primary.opacity(0.35))
                 .transition(.opacity)
                 .animation(.easeInOut(duration: 0.2), value: viewModel.timerState)
+                .accessibilityHidden(true)
             }
         }
         .padding(.vertical, 8)
@@ -126,6 +128,8 @@ struct TimerDisplayView: View {
         )
         .scaleEffect(viewModel.timerState == .idle ? 1.0 : 1.05)
         .animation(.easeInOut(duration: 0.3), value: viewModel.timerState)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(viewModel.timerState == .idle ? .isButton : [])
     }
     
     private var textColor: Color {

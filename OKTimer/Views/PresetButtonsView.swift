@@ -27,8 +27,17 @@ struct PresetButtonsView: View {
                 }
                 .buttonStyle(PresetButtonStyle(isDisabled: isDisabled))
                 .disabled(isDisabled)
+                .accessibilityLabel(accessibilityLabel(for: preset))
+                .accessibilityHint("Set timer to this duration")
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Preset timers")
+    }
+    
+    private func accessibilityLabel(for preset: (label: String, seconds: TimeInterval)) -> String {
+        let minutes = Int(preset.seconds) / 60
+        return "\(minutes) minute\(minutes == 1 ? "" : "s")"
     }
 }
 

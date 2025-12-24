@@ -20,6 +20,8 @@ struct TimerControlsView: View {
             }
             .buttonStyle(PrimaryButtonStyle())
             .disabled(viewModel.timerState == .completed)
+            .accessibilityLabel(primaryButtonLabel)
+            .accessibilityHint(accessibilityHint)
             
             // Secondary action button (Reset/Stop)
             if viewModel.timerState != .idle {
@@ -34,6 +36,8 @@ struct TimerControlsView: View {
                 }
                 .buttonStyle(SecondaryButtonStyle())
                 .transition(.scale.combined(with: .opacity))
+                .accessibilityLabel("Reset timer")
+                .accessibilityHint("Reset the timer to its original time")
             }
         }
     }
@@ -48,6 +52,19 @@ struct TimerControlsView: View {
             return "Resume"
         case .completed:
             return "Done!"
+        }
+    }
+    
+    private var accessibilityHint: String {
+        switch viewModel.timerState {
+        case .idle:
+            return "Start the timer countdown"
+        case .running:
+            return "Pause the timer"
+        case .paused:
+            return "Resume the timer countdown"
+        case .completed:
+            return "Timer has completed"
         }
     }
     
