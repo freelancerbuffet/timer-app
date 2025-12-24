@@ -31,26 +31,43 @@ struct TimerDisplayView: View {
             // Timer display or picker
             VStack(spacing: 16) {
                 if isShowingPicker && viewModel.timerState == .idle {
-                    TimePickerView(
-                        minutes: $pickerMinutes,
-                        seconds: $pickerSeconds,
-                        isDisabled: false
-                    )
-                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                    VStack(spacing: 16) {
+                        TimePickerView(
+                            minutes: $pickerMinutes,
+                            seconds: $pickerSeconds,
+                            isDisabled: false
+                        )
+                        .transition(.opacity.combined(with: .scale(scale: 0.95)))
+                        
+                        // Done button
+                        Button(action: {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                isShowingPicker = false
+                                viewModel.setTime(minutes: pickerMinutes, seconds: pickerSeconds)
+                            }
+                        }) {
+                            Text("Done")
+                                .font(.system(size: 16, weight: .medium, design: .rounded))
+                                .foregroundColor(.accentColor)
+                                .padding(.horizontal, 24)
+                                .padding(.vertical, 8)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .fill(Color.accentColor.opacity(0.15))
+                                )
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
                 } else {
                     timerText
                         .transition(.opacity.combined(with: .scale(scale: 0.95)))
-                }
-            }
-        }
-        .onTapGesture {
-            if viewModel.timerState == .idle {
-                withAnimation(.easeInOut(duration: 0.3)) {
-                    isShowingPicker.toggle()
-                    if !isShowingPicker {
-                        // Apply picker values
-                        viewModel.setTime(minutes: pickerMinutes, seconds: pickerSeconds)
-                    }
+                        .onTapGesture {
+                            if viewModel.timerState == .idle {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    isShowingPicker = true
+                                }
+                            }
+                        }
                 }
             }
         }
@@ -72,7 +89,7 @@ struct TimerDisplayView: View {
     }
     
     private var timerText: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 8) {
             Text(viewModel.formattedTime)
                 .font(.system(size: timerFontSize, weight: .semibold, design: .rounded))
                 .foregroundColor(textColor)
@@ -80,12 +97,34 @@ struct TimerDisplayView: View {
                 .animation(.easeInOut(duration: 0.2), value: viewModel.formattedTime)
             
             if viewModel.timerState == .idle {
-                Text("tap to edit")
-                    .font(.system(size: 14, weight: .regular, design: .rounded))
-                    .foregroundColor(.primary.opacity(0.4))
-                    .transition(.opacity)
+                HStack(spacing: 4) {
+                    Image(systemName: "pencil")
+                        .font(.system(size: 12, weight: .medium))
+                    Text("Tap to set time")
+                        .font(.system(size: 13, weight: .medium, design: .rounded))
+                }
+                .foregroundColor(.primary.opacity(0.35))
+                .transition(.opacity)
+                .animation(.easeInOut(duration: 0.2), value: viewModel.timerState)
             }
         }
+        .padding(.vertical, 8)
+        .background(
+            Group {
+                if viewModel.timerState == .idle {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color.primary.opacity(0.03))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.primary.opacity(0.08), lineWidth: 1)
+                        )
+                } else {
+                    Rectangle().fill(Color.clear)
+                }
+            }
+        )
+        .scaleEffect(viewModel.timerState == .idle ? 1.0 : 1.05)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.timerState)
     }
     
     private var textColor: Color {
