@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@MainActor
 class TimerViewModel: ObservableObject {
     @Published var timeRemaining: TimeInterval = 300 // 5 minutes default
     @Published var totalTime: TimeInterval = 300
@@ -90,6 +91,9 @@ class TimerViewModel: ObservableObject {
         showCompletionAnimation = false
         showFullscreenAlert = false
         
+        // Dismiss any alert window
+        alertWindowManager.dismissAlert()
+        
         // Play haptic feedback if enabled
         if settingsViewModel?.settings.hapticsEnabled ?? true {
             hapticService.timerReset()
@@ -97,16 +101,18 @@ class TimerViewModel: ObservableObject {
     }
     
     func snoozeTimer() {
-        // Snooze for 5 minutes
+        // Dismiss alert first
         showCompletionAnimation = false
         showFullscreenAlert = false
+        alertWindowManager.dismissAlert()
         
+        // Snooze for 5 minutes
         timeRemaining = 300 // 5 minutes
         totalTime = 300
         timerState = .idle
         
-        // Optionally auto-start after snooze
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        // Auto-start after a brief delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
             self?.startTimer()
         }
     }
