@@ -10,7 +10,6 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var viewModel = TimerViewModel()
     @StateObject private var settingsViewModel = SettingsViewModel()
-    @StateObject private var historyManager = SessionHistoryManager()
     @State private var showSettings = false
     @State private var showStatistics = false
     
@@ -19,20 +18,21 @@ struct ContentView: View {
             // Header with settings button
             HStack {
                 Button(action: {
-                    showStatistics = true
+                    // Statistics feature coming soon
                 }) {
                     Image(systemName: "chart.bar")
                         .font(.system(size: 18, weight: .regular))
-                        .foregroundColor(.primary.opacity(0.5))
+                        .foregroundColor(.primary.opacity(0.3))
                         .frame(width: 36, height: 36)
                         .background(
                             Circle()
-                                .fill(Color.primary.opacity(0.06))
+                                .fill(Color.primary.opacity(0.03))
                         )
                 }
                 .buttonStyle(PlainButtonStyle())
-                .accessibilityLabel("Statistics")
-                .accessibilityHint("View your timer statistics and history")
+                .disabled(true)
+                .accessibilityLabel("Statistics (Coming Soon)")
+                .accessibilityHint("Statistics feature is not yet available")
                 
                 Spacer()
                 
@@ -109,12 +109,8 @@ struct ContentView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView(settingsViewModel: settingsViewModel)
         }
-        .sheet(isPresented: $showStatistics) {
-            StatisticsView(historyManager: historyManager)
-        }
         .onAppear {
             viewModel.settingsViewModel = settingsViewModel
-            viewModel.historyManager = historyManager
         }
     }
 }
