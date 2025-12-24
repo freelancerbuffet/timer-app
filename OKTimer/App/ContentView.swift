@@ -12,6 +12,7 @@ struct ContentView: View {
     @StateObject private var settingsViewModel = SettingsViewModel()
     @State private var showSettings = false
     @State private var showStatistics = false
+    @Environment(\.scenePhase) private var scenePhase
     
     var body: some View {
         VStack(spacing: 0) {
@@ -121,8 +122,31 @@ struct ContentView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView(settingsViewModel: settingsViewModel)
         }
+        .overlay {
+            // Show radial progress indicator when app loses focus on macOS
+            #if os(macOS)
+            if scenePhase == .background || scenePhase == .inactive {
+                if viewModel.timerState == .running {
+                    RadialProgressIndicator(
+                        progress: viewModel.progress,
+                        timeRemaining: viewModel.timeRemaining,
+                        totalTime: viewModel.totalTime
+                    )
+                    .transition(.opacity)
+                }
+            }
+            #endif
+        }
         .onAppear {
             viewModel.settingsViewModel = settingsViewModel
+        }
+        .onChange(of: scenePhase) { newPhase in
+            print("🔄 Scene phase changed to: \(newPhase)")
+            if newPhase == .background || newPhase == .inactive {
+                if viewModel.timerState == .running {
+                    print("🎯 Timer is running, radial progress indicator should show")
+                }
+            }
         }
     }
 }

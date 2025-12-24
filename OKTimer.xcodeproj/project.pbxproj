@@ -26,6 +26,7 @@
 		AA1234830001A0001 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234830001 /* ColorTheme.swift */; };
 		AA1234840001A0001 /* AlertWindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234840001 /* AlertWindowManager.swift */; };
 		AA1234850001A0001 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234850001 /* ConfettiView.swift */; };
+		AA1234860001A0001 /* RadialProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1234860001 /* RadialProgressIndicator.swift */; };
 
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		AA1234830001 /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		AA1234840001 /* AlertWindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertWindowManager.swift; sourceTree = "<group>"; };
 		AA1234850001 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
+		AA1234860001 /* RadialProgressIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialProgressIndicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 				AA1234790001 /* CompletionAnimationView.swift */,
 				AA1234820001 /* SettingsView.swift */,
 				AA1234850001 /* ConfettiView.swift */,
+				AA1234860001 /* RadialProgressIndicator.swift */,
 );
 			path = Views;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				AA1234830001A0001 /* ColorTheme.swift in Sources */,
 				AA1234840001A0001 /* AlertWindowManager.swift in Sources */,
 				AA1234850001A0001 /* ConfettiView.swift in Sources */,
+				AA1234860001A0001 /* RadialProgressIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

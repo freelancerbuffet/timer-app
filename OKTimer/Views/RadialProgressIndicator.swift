@@ -9,6 +9,8 @@ import SwiftUI
 
 struct RadialProgressIndicator: View {
     let progress: Double // 0.0 to 1.0
+    let timeRemaining: TimeInterval
+    let totalTime: TimeInterval
     let lineWidth: CGFloat = 8
     let glowIntensity: CGFloat = 1.5
     
@@ -77,10 +79,7 @@ struct RadialProgressIndicator: View {
     }
     
     private var timeText: String {
-        // This is a placeholder - will be replaced with actual timer time
-        let remainingProgress = 1.0 - progress
-        let totalSeconds = 300 // 5 minutes as example
-        let remaining = Int(Double(totalSeconds) * remainingProgress)
+        let remaining = Int(timeRemaining)
         let minutes = remaining / 60
         let seconds = remaining % 60
         return String(format: "%02d:%02d", minutes, seconds)
@@ -89,6 +88,6 @@ struct RadialProgressIndicator: View {
 
 #Preview {
     ZStack {
-        RadialProgressIndicator(progress: 0.75)
+        RadialProgressIndicator(progress: 0.75, timeRemaining: 125, totalTime: 500)
     }
 }
