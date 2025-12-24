@@ -13,19 +13,31 @@ import AppKit
 
 @MainActor
 class AlertWindowManager: ObservableObject {
-    static let shared = AlertWindowManager()
-    
     private var alertWindow: NSWindow?
     private var dismissCallback: (() -> Void)?
     private var snoozeCallback: (() -> Void)?
+    private var isShowingAlert = false
     
-    private init() {}
+    init() {}
+    
+    deinit {
+        // Ensure cleanup on deallocation
+        Task { @MainActor in
+            dismissAlert()
+        }
+    }
     
     func showFullscreenAlert(onDismiss: @escaping () -> Void, onSnooze: @escaping () -> Void) {
+        // Prevent multiple alerts
+        guard !isShowingAlert else { return }
+        
         // Always dismiss existing alert first
         dismissAlert()
         
-        // Store callbacks
+        // Set showing flag
+        isShowingAlert = true
+        
+        // Store callbacks with weak self to avoid retain cycles
         self.dismissCallback = onDismiss
         self.snoozeCallback = onSnooze
         
@@ -45,18 +57,24 @@ class AlertWindowManager: ObservableObject {
         window.hidesOnDeactivate = false
         window.ignoresMouseEvents = false
         
-        // Create simple, direct action handlers
+        // Create simple, direct action handlers with explicit weak references
         let alertView = SimpleFullscreenAlertView(
             onDismiss: { [weak self] in
-                self?.handleDismiss()
+                DispatchQueue.main.async {
+                    self?.handleDismiss()
+                }
             },
             onSnooze: { [weak self] in
-                self?.handleSnooze()
+                DispatchQueue.main.async {
+                    self?.handleSnooze()
+                }
             }
         )
         
         // Set up the content view with minimal nesting
-        window.contentView = NSHostingView(rootView: alertView)
+        let hostingView = NSHostingView(rootView: alertView)
+        hostingView.translatesAutoresizingMaskIntoConstraints = false
+        window.contentView = hostingView
         
         // Store the window reference
         self.alertWindow = window
@@ -68,30 +86,91 @@ class AlertWindowManager: ObservableObject {
         // Activate the app
         NSApp.activate(ignoringOtherApps: true)
     }
-    
     private func handleDismiss() {
+        // Prevent multiple calls by checking if window still exists
+        guard let window = alertWindow, isShowingAlert else { return }
+        
+        // Clear the showing flag immediately
+        isShowingAlert = false
+        
+        // Capture callback first
         let callback = self.dismissCallback
-        closeWindow()
-        callback?()
-    }
-    
-    private func handleSnooze() {
-        let callback = self.snoozeCallback
-        closeWindow()
-        callback?()
-    }
-    
-    private func closeWindow() {
-        if let window = alertWindow {
+        
+        // Clear everything immediately to prevent race conditions
+        self.alertWindow = nil
+        self.dismissCallback = nil
+        self.snoozeCallback = nil
+        
+        // Clear content view to break any potential retain cycles
+        window.contentView = nil
+        
+        // Close window on the main queue
+        DispatchQueue.main.async {
             window.orderOut(nil)
-            window.close()
-            alertWindow = nil
         }
+        
+        // Execute callback after clearing references
+        if let callback = callback {
+            DispatchQueue.main.async {
+                callback()
+            }
+        }
+    }
+
+    private func handleSnooze() {
+        // Prevent multiple calls by checking if window still exists
+        guard let window = alertWindow, isShowingAlert else { return }
+        
+        // Clear the showing flag immediately
+        isShowingAlert = false
+        
+        // Capture callback first
+        let callback = self.snoozeCallback
+        
+        // Clear everything immediately to prevent race conditions
+        self.alertWindow = nil
+        self.dismissCallback = nil
+        self.snoozeCallback = nil
+        
+        // Clear content view to break any potential retain cycles
+        window.contentView = nil
+        
+        // Close window on the main queue
+        DispatchQueue.main.async {
+            window.orderOut(nil)
+        }
+        
+        // Execute callback after clearing references
+        if let callback = callback {
+            DispatchQueue.main.async {
+                callback()
+            }
+        }
+    }
+    private func closeWindow() {
+        // This method is now only called from dismissAlert()
+        guard let window = alertWindow else { return }
+        
+        // Clear the showing flag
+        isShowingAlert = false
+        
+        // Clear content view to break any potential retain cycles
+        window.contentView = nil
+        
+        // Clear references immediately
+        alertWindow = nil
         dismissCallback = nil
         snoozeCallback = nil
+        
+        // Close window on main queue to avoid threading issues
+        DispatchQueue.main.async {
+            window.orderOut(nil)
+        }
     }
-    
+
     func dismissAlert() {
+        // Only close if we actually have a window to avoid double-close
+        guard alertWindow != nil, isShowingAlert else { return }
         closeWindow()
     }
 }

@@ -27,6 +27,11 @@ class SoundService: ObservableObject {
         configureAudioSession()
     }
     
+    deinit {
+        audioPlayer?.stop()
+        audioPlayer = nil
+    }
+    
     // MARK: - Public Methods
     
     func playCompletionSound() {
@@ -55,8 +60,10 @@ class SoundService: ObservableObject {
         AudioServicesPlaySystemSound(soundID)
         #else
         // On macOS, use NSSound for system sounds
-        if let sound = NSSound(named: NSSound.Name("Hero")) {
-            sound.play()
+        DispatchQueue.main.async {
+            if let sound = NSSound(named: NSSound.Name("Hero")) {
+                sound.play()
+            }
         }
         #endif
     }
@@ -69,11 +76,15 @@ class SoundService: ObservableObject {
         }
         
         do {
+            // Stop any existing player
+            audioPlayer?.stop()
+            
             audioPlayer = try AVAudioPlayer(contentsOf: soundURL)
             audioPlayer?.prepareToPlay()
             audioPlayer?.play()
         } catch {
             print("Failed to play sound: \(error)")
+            audioPlayer = nil
         }
     }
 }

@@ -20,10 +20,19 @@ class TimerViewModel: ObservableObject {
     private var endDate: Date?
     private let soundService = SoundService.shared
     private let hapticService = HapticService.shared
-    private let alertWindowManager = AlertWindowManager.shared
+    private let alertWindowManager = AlertWindowManager()
     
     // Settings
     var settingsViewModel: SettingsViewModel?
+    
+    deinit {
+        // Ensure proper cleanup
+        timer?.cancel()
+        timer = nil
+        Task { @MainActor in
+            alertWindowManager.dismissAlert()
+        }
+    }
     
     // MARK: - Computed Properties
     
@@ -180,5 +189,7 @@ class TimerViewModel: ObservableObject {
         showCompletionAnimation = false
         showFullscreenAlert = false
         alertWindowManager.dismissAlert()
+        // Reset timer state to idle when dismissed
+        timerState = .idle
     }
 }
