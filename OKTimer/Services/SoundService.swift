@@ -17,6 +17,10 @@ import AppKit
 class SoundService: ObservableObject {
     static let shared = SoundService()
     
+    // System sound IDs for iOS
+    private static let completionSoundID: UInt32 = 1057  // Pleasant chime
+    private static let tickSoundID: UInt32 = 1104        // Subtle tick
+    
     private var audioPlayer: AVAudioPlayer?
     
     private init() {
@@ -26,15 +30,11 @@ class SoundService: ObservableObject {
     // MARK: - Public Methods
     
     func playCompletionSound() {
-        // Use system sound for now - a pleasant completion sound
-        // System Sound ID 1057 is a nice chime sound
-        playSystemSound(soundID: 1057)
+        playSystemSound(soundID: Self.completionSoundID)
     }
     
     func playTickSound() {
-        // Light tick sound for UI interactions
-        // System Sound ID 1104 is a subtle tick
-        playSystemSound(soundID: 1104)
+        playSystemSound(soundID: Self.tickSoundID)
     }
     
     // MARK: - Private Methods
@@ -61,7 +61,7 @@ class SoundService: ObservableObject {
         #endif
     }
     
-    // Future method for custom sound files
+    // Play custom sound files from bundle
     func playCustomSound(named soundName: String) {
         guard let soundURL = Bundle.main.url(forResource: soundName, withExtension: "wav") else {
             print("Sound file not found: \(soundName)")
