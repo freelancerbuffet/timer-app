@@ -16,9 +16,11 @@ class AlertWindowManager: ObservableObject {
     static let shared = AlertWindowManager()
     
     private var alertWindow: NSWindow?
+    private var progressOverlayWindow: NSWindow?
     private var dismissCallback: (() -> Void)?
     private var snoozeCallback: (() -> Void)?
     private var isShowingAlert = false
+    private var isShowingProgressOverlay = false
     
     private init() {}
     
@@ -26,6 +28,7 @@ class AlertWindowManager: ObservableObject {
         // Ensure cleanup on deallocation
         Task { @MainActor in
             dismissAlert()
+            hideProgressOverlay()
         }
     }
     
@@ -174,6 +177,120 @@ class AlertWindowManager: ObservableObject {
         // Only close if we actually have a window to avoid double-close
         guard alertWindow != nil, isShowingAlert else { return }
         closeWindow()
+    }
+    
+    // MARK: - Progress Overlay Methods
+    
+    func showProgressOverlay(progress: Double, timeRemaining: TimeInterval, totalTime: TimeInterval) {
+        guard !isShowingProgressOverlay else {
+            updateProgressOverlay(progress: progress, timeRemaining: timeRemaining, totalTime: totalTime)
+            return
+        }
+        
+        isShowingProgressOverlay = true
+        
+        // Get the main screen bounds
+        guard let screen = NSScreen.main else { return }
+        let screenFrame = screen.frame
+        
+        // Create a small overlay window in the top-right corner
+        let overlaySize: CGFloat = 120
+        let margin: CGFloat = 20
+        let overlayFrame = NSRect(
+            x: screenFrame.maxX - overlaySize - margin,
+            y: screenFrame.maxY - overlaySize - margin,
+            width: overlaySize,
+            height: overlaySize
+        )
+        
+        let window = NSWindow(
+            contentRect: overlayFrame,
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: false
+        )
+        
+        window.isOpaque = false
+        window.backgroundColor = NSColor.clear
+        window.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.floatingWindow)))
+        window.collectionBehavior = [.canJoinAllSpaces, .stationary]
+        window.hidesOnDeactivate = false
+        window.ignoresMouseEvents = true // Don't interfere with user interactions
+        
+        let overlayView = SystemProgressOverlayView(
+            progress: progress,
+            timeRemaining: timeRemaining,
+            totalTime: totalTime
+        )
+        
+        let hostingView = NSHostingView(rootView: overlayView)
+        hostingView.translatesAutoresizingMaskIntoConstraints = false
+        window.contentView = hostingView
+        
+        self.progressOverlayWindow = window
+        window.orderFront(nil)
+    }
+    
+    func updateProgressOverlay(progress: Double, timeRemaining: TimeInterval, totalTime: TimeInterval) {
+        guard let window = progressOverlayWindow,
+              let hostingView = window.contentView as? NSHostingView<SystemProgressOverlayView> else {
+            return
+        }
+        
+        let updatedView = SystemProgressOverlayView(
+            progress: progress,
+            timeRemaining: timeRemaining,
+            totalTime: totalTime
+        )
+        
+        hostingView.rootView = updatedView
+    }
+    
+    func hideProgressOverlay() {
+        guard let window = progressOverlayWindow, isShowingProgressOverlay else { return }
+        
+        isShowingProgressOverlay = false
+        
+        // Clear content view
+        window.contentView = nil
+        
+        // Clear reference
+        progressOverlayWindow = nil
+        
+        // Close window
+        DispatchQueue.main.async {
+            window.orderOut(nil)
+        }
+    }
+}
+
+// MARK: - System Progress Overlay View
+
+private struct SystemProgressOverlayView: View {
+    let progress: Double
+    let timeRemaining: TimeInterval
+    let totalTime: TimeInterval
+    
+    var body: some View {
+        ZStack {
+            // Semi-transparent background
+            RoundedRectangle(cornerRadius: 16)
+                .fill(.black.opacity(0.7))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(.white.opacity(0.2), lineWidth: 1)
+                )
+            
+            // Progress indicator
+            RadialProgressIndicator(
+                progress: progress,
+                timeRemaining: timeRemaining,
+                totalTime: totalTime,
+                isSystemOverlay: true
+            )
+            .padding(12)
+        }
+        .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 4)
     }
 }
 #endif
